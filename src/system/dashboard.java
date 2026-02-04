@@ -14,8 +14,8 @@ import javax.swing.JOptionPane;
  */
 public class dashboard extends javax.swing.JFrame {
 
-    Color defaultColor = new Color(236, 240, 241);   // light gray
-    Color activeColor  = new Color(255,204,204);      // YOUR color
+    Color defaultColor = new Color(236, 240, 241);   
+    Color activeColor  = new Color(255,204,204);      
     
     public dashboard() {
         initComponents();

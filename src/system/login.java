@@ -50,7 +50,7 @@ public class login extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("LOGIN");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 60, 90, 60));
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 60, 90, 60));
 
         emails.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         emails.setForeground(new java.awt.Color(255, 255, 255));
