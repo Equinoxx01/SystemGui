@@ -1,7 +1,14 @@
 
 package system;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import config.config;
+import system.user;
+import system.dashboard;
+import user.usersdashboard;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,7 +22,8 @@ public class login extends javax.swing.JFrame {
         initComponents();
         con = config.connectDB();
     }
-
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -132,25 +140,50 @@ public class login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        try {
-            String sql = "SELECT * FROM tbl_register WHERE email=? AND password=?";
-            PreparedStatement pst = con.prepareStatement(sql);
+try {
+    String sql = "SELECT * FROM tbl_register WHERE email=? AND password=?";
+    PreparedStatement pst = con.prepareStatement(sql);
+    pst.setString(1, email.getText());
+    pst.setString(2, new String(password.getPassword()));
 
-            pst.setString(1, email.getText());
-            pst.setString(2, new String(password.getPassword()));
+    ResultSet rs = pst.executeQuery();
 
-            ResultSet rs = pst.executeQuery();
+    if (rs.next()) {
+        String userType = rs.getString("user_type"); // "admin" or "user"
+        String status = rs.getString("status");       // "pending" or "active"
 
-            if (rs.next()) {
-                JOptionPane.showMessageDialog(this, "Login Successful!");
-                new dashboard().setVisible(true);
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Invalid Username or Password");
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+        if (!status.equalsIgnoreCase("active")) {
+            JOptionPane.showMessageDialog(this, "Your account is not yet approved by admin.");
+            return;
         }
+
+        JOptionPane.showMessageDialog(this, "Login Successful!");
+
+        // Open correct dashboard based on user type
+        if (userType.equalsIgnoreCase("admin")) {
+            new dashboard().setVisible(true);   // Admin dashboard
+        } else if (userType.equalsIgnoreCase("user")) {
+            // Make sure the import matches your package structure
+            new usersdashboard().setVisible(true); // User dashboard
+        }
+
+        this.dispose(); // Close login form
+
+    } else {
+        JOptionPane.showMessageDialog(this, "Invalid Email or Password");
+    }
+
+    rs.close();
+    pst.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Database error: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Login error: " + e.getMessage());
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked

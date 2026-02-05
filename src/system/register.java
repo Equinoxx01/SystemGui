@@ -13,7 +13,7 @@ public class register extends javax.swing.JFrame {
         initComponents();
         con = config.connectDB();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -176,26 +176,43 @@ public class register extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        try {
-            String sql = "INSERT INTO tbl_register(f_name, l_name, email, username, password) VALUES(?,?,?,?,?)";
-            PreparedStatement pst = con.prepareStatement(sql);
+        String firstName = fname.getText();        
+        String lastName  = lname.getText();        
+        String Email     = email.getText();        
+        String userName  = uname.getText();        
+        String pass  = new String(password.getText());
 
-            pst.setString(1, fname.getText()); // fname
-            pst.setString(2, lname.getText()); // lname
-            pst.setString(3, email.getText()); // email
-            pst.setString(4, uname.getText()); // username
-            pst.setString(5, password.getText()); // password
+        if (firstName.isEmpty() || lastName.isEmpty() ||
+            Email.isEmpty() || userName.isEmpty() || pass.isEmpty()) {
 
-            pst.executeUpdate();
-
-            JOptionPane.showMessageDialog(this, "Registered Successfully!");
-            new login().setVisible(true);
-            this.dispose();
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
-            // optional: stay on register form
+            JOptionPane.showMessageDialog(this, "All fields are required");
+            return;
         }
+
+        String sql = "INSERT INTO tbl_register(f_name, l_name, email, username, password) "
+        + "VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = config.connectDB();
+                PreparedStatement pst = conn.prepareStatement(sql)) {
+
+               pst.setString(1, firstName);
+               pst.setString(2, lastName);
+               pst.setString(3, Email);
+               pst.setString(4, userName);
+               pst.setString(5, pass);
+
+               pst.executeUpdate();
+               JOptionPane.showMessageDialog(this, "Signup successful!");
+
+               new login().setVisible(true);
+               this.dispose();
+
+           } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this,
+                    "Error: " + e.getMessage());
+                    e.printStackTrace(); // Also prints details to console
+}
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked

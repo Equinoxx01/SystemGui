@@ -66,10 +66,13 @@ public class user extends javax.swing.JFrame {
         orders = new javax.swing.JButton();
         reports = new javax.swing.JButton();
         logout = new javax.swing.JButton();
+        adminprofile = new javax.swing.JButton();
         user = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         usertable1 = new javax.swing.JTable();
-        jLabel3 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -168,18 +171,29 @@ public class user extends javax.swing.JFrame {
                 logoutActionPerformed(evt);
             }
         });
-        jPanel2.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 420, 150, 30));
+        jPanel2.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 450, 150, 30));
+
+        adminprofile.setBackground(new java.awt.Color(255, 255, 255));
+        adminprofile.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        adminprofile.setText("Profile");
+        adminprofile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                adminprofileMouseClicked(evt);
+            }
+        });
+        adminprofile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adminprofileActionPerformed(evt);
+            }
+        });
+        jPanel2.add(adminprofile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 370, 150, 30));
 
         user.setBackground(new java.awt.Color(255, 255, 255));
         user.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         user.setText("User");
-        user.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         user.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 userMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                userMouseEntered(evt);
             }
         });
         user.addActionListener(new java.awt.event.ActionListener() {
@@ -204,10 +218,29 @@ public class user extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(usertable1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 110, 630, 90));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 150, 630, 90));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/userbg.png"))); // NOI18N
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 0, 630, 500));
+        jButton1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jButton1.setText("ADD");
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 100, 110, 33));
+
+        jButton2.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jButton2.setText("UPDATE");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 100, 110, 30));
+
+        jButton3.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jButton3.setText("DELETE");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 100, 110, 33));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -284,21 +317,29 @@ public class user extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_logoutActionPerformed
 
+    private void adminprofileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminprofileMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_adminprofileMouseClicked
+
+    private void adminprofileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminprofileActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_adminprofileActionPerformed
+
     private void userMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userMouseClicked
-        resetMenuColors();
-        user.setBackground(activeColor);
+        // TODO add your handling code here:
     }//GEN-LAST:event_userMouseClicked
 
-    private void userMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userMouseEntered
-        resetMenuColors();
-        user.setBackground(activeColor);
-    }//GEN-LAST:event_userMouseEntered
-
     private void userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userActionPerformed
-        user cs = new user();
-        cs.setVisible(true);
-        this.dispose();
+        // TODO add your handling code here:
     }//GEN-LAST:event_userActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -336,10 +377,13 @@ public class user extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton adminprofile;
     private javax.swing.JButton customer;
     private javax.swing.JButton dashboard;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
