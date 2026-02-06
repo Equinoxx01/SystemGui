@@ -14,7 +14,7 @@ public class dashboard extends javax.swing.JFrame {
     public int adminId;
     
     public dashboard(int id) {
-    initComponents();
+    this();
     this.adminId = id;
     }
     
@@ -273,7 +273,8 @@ public class dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_userMouseClicked
 
     private void userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userActionPerformed
-        // TODO add your handling code here:
+        new user(this.adminId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_userActionPerformed
 
     private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
@@ -298,7 +299,8 @@ public class dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_adminprofileMouseClicked
 
     private void adminprofileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminprofileActionPerformed
-        // TODO add your handling code here:
+        new adminprofile(this.adminId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_adminprofileActionPerformed
 
     /**

@@ -7,16 +7,27 @@ package system;
 
     import config.config;
     import java.awt.Color;
+    import java.sql.Connection;
+    import java.sql.PreparedStatement;
+    import java.sql.ResultSet;
+    import java.sql.SQLException;
     import javax.swing.JButton;
     import javax.swing.JOptionPane;
     
 public class user extends javax.swing.JFrame {
 
+    public int adminId;
+
     Color defaultColor = new Color(236, 240, 241);   
     Color activeColor  = new Color(255,204,204);  
     
     public user() {
+        this(0);
+    }
+
+    public user(int adminId) {
         initComponents();
+        this.adminId = adminId;
         displayUser();
         
         JButton[] buttons = { dashboard, customer, products, orders, reports, user, logout };
@@ -44,9 +55,45 @@ public class user extends javax.swing.JFrame {
 }
     void displayUser(){
          config con = new config();
-         String sql = "SELECT * FROM tbl_register";
+         // Show all users with approval status visible.
+         String sql = "SELECT r_id AS 'ID', f_name AS 'First Name', l_name AS 'Last Name', "
+                 + "email AS 'Email', username AS 'Username', user_type AS 'Type', status AS 'Status' "
+                 + "FROM tbl_register ORDER BY r_id DESC";
          con.displayData(sql, usertable1);
         
+    }
+
+    private Integer getSelectedUserId() {
+        int selectedRow = usertable1.getSelectedRow();
+        if (selectedRow < 0) {
+            return null;
+        }
+        Object rawId = usertable1.getValueAt(selectedRow, 0); // "ID" column
+        if (rawId == null) {
+            return null;
+        }
+        try {
+            if (rawId instanceof Number) {
+                return ((Number) rawId).intValue();
+            }
+            return Integer.parseInt(rawId.toString());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private String getSelectedUserStatus() {
+        int selectedRow = usertable1.getSelectedRow();
+        if (selectedRow < 0) {
+            return null;
+        }
+        // "Status" is last column in displayUser() query
+        int statusCol = usertable1.getColumnCount() - 1;
+        if (statusCol < 0) {
+            return null;
+        }
+        Object raw = usertable1.getValueAt(selectedRow, statusCol);
+        return raw == null ? null : raw.toString();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -73,6 +120,7 @@ public class user extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -222,6 +270,11 @@ public class user extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButton1.setText("ADD");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 100, 110, 33));
 
         jButton2.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -241,6 +294,15 @@ public class user extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 100, 110, 33));
+
+        jButton4.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jButton4.setText("APPROVE");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 100, 110, 33));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -262,7 +324,8 @@ public class user extends javax.swing.JFrame {
     }//GEN-LAST:event_dashboardMouseClicked
 
     private void dashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dashboardActionPerformed
-        // TODO add your handling code here:
+        new dashboard(this.adminId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_dashboardActionPerformed
 
     private void customerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerMouseClicked
@@ -318,11 +381,13 @@ public class user extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutActionPerformed
 
     private void adminprofileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminprofileMouseClicked
-        // TODO add your handling code here:
+        new adminprofile(this.adminId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_adminprofileMouseClicked
 
     private void adminprofileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminprofileActionPerformed
-        // TODO add your handling code here:
+        new adminprofile(this.adminId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_adminprofileActionPerformed
 
     private void userMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userMouseClicked
@@ -333,13 +398,298 @@ public class user extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_userActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String firstName = JOptionPane.showInputDialog(this, "First Name:");
+        if (firstName == null) return;
+        firstName = firstName.trim();
+
+        String lastName = JOptionPane.showInputDialog(this, "Last Name:");
+        if (lastName == null) return;
+        lastName = lastName.trim();
+
+        String email = JOptionPane.showInputDialog(this, "Email:");
+        if (email == null) return;
+        email = email.trim();
+
+        String username = JOptionPane.showInputDialog(this, "Username:");
+        if (username == null) return;
+        username = username.trim();
+
+        String password = JOptionPane.showInputDialog(this, "Password:");
+        if (password == null) return;
+        password = password.trim();
+
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "All fields are required.");
+            return;
+        }
+
+        Object[] types = {"user", "admin"};
+        String userType = (String) JOptionPane.showInputDialog(
+                this, "User Type:", "Add User",
+                JOptionPane.QUESTION_MESSAGE, null, types, "user"
+        );
+        if (userType == null) return;
+
+        Object[] statuses = {"active", "pending"};
+        String status = (String) JOptionPane.showInputDialog(
+                this, "Status:", "Add User",
+                JOptionPane.QUESTION_MESSAGE, null, statuses, "active"
+        );
+        if (status == null) return;
+
+        try (Connection conn = config.connectDB()) {
+            if (conn == null) {
+                JOptionPane.showMessageDialog(this, "Database connection failed.");
+                return;
+            }
+
+            // Basic duplicate check (email or username)
+            try (PreparedStatement dup = conn.prepareStatement(
+                    "SELECT COUNT(*) AS cnt FROM tbl_register WHERE email = ? OR username = ?")) {
+                dup.setString(1, email);
+                dup.setString(2, username);
+                try (ResultSet rs = dup.executeQuery()) {
+                    if (rs.next() && rs.getInt("cnt") > 0) {
+                        JOptionPane.showMessageDialog(this, "Email or Username already exists.");
+                        return;
+                    }
+                }
+            }
+
+            try (PreparedStatement pst = conn.prepareStatement(
+                    "INSERT INTO tbl_register(f_name, l_name, email, username, password, user_type, status) VALUES (?,?,?,?,?,?,?)")) {
+                pst.setString(1, firstName);
+                pst.setString(2, lastName);
+                pst.setString(3, email);
+                pst.setString(4, username);
+                pst.setString(5, password);
+                pst.setString(6, userType);
+                pst.setString(7, status);
+                pst.executeUpdate();
+            }
+
+            JOptionPane.showMessageDialog(this, "User added successfully.");
+            displayUser();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error adding user: " + e.getMessage());
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        Integer userId = getSelectedUserId();
+        if (userId == null) {
+            JOptionPane.showMessageDialog(this, "Please select a user to update.");
+            return;
+        }
+
+        try (Connection conn = config.connectDB()) {
+            if (conn == null) {
+                JOptionPane.showMessageDialog(this, "Database connection failed.");
+                return;
+            }
+
+            String currentFirstName = null;
+            String currentLastName = null;
+            String currentEmail = null;
+            String currentUsername = null;
+            String currentPassword = null;
+            String currentUserType = null;
+            String currentStatus = null;
+
+            try (PreparedStatement get = conn.prepareStatement(
+                    "SELECT f_name, l_name, email, username, password, user_type, status FROM tbl_register WHERE r_id = ?")) {
+                get.setInt(1, userId);
+                try (ResultSet rs = get.executeQuery()) {
+                    if (!rs.next()) {
+                        JOptionPane.showMessageDialog(this, "User not found.");
+                        return;
+                    }
+                    currentFirstName = rs.getString("f_name");
+                    currentLastName = rs.getString("l_name");
+                    currentEmail = rs.getString("email");
+                    currentUsername = rs.getString("username");
+                    currentPassword = rs.getString("password");
+                    currentUserType = rs.getString("user_type");
+                    currentStatus = rs.getString("status");
+                }
+            }
+
+            String firstName = JOptionPane.showInputDialog(this, "First Name:", currentFirstName);
+            if (firstName == null) return;
+            firstName = firstName.trim();
+
+            String lastName = JOptionPane.showInputDialog(this, "Last Name:", currentLastName);
+            if (lastName == null) return;
+            lastName = lastName.trim();
+
+            String email = JOptionPane.showInputDialog(this, "Email:", currentEmail);
+            if (email == null) return;
+            email = email.trim();
+
+            String username = JOptionPane.showInputDialog(this, "Username:", currentUsername);
+            if (username == null) return;
+            username = username.trim();
+
+            String password = JOptionPane.showInputDialog(this, "New Password (leave blank to keep current):", "");
+            if (password == null) return;
+            password = password.trim();
+            if (password.isEmpty()) {
+                password = currentPassword;
+            }
+
+            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || username.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "First name, last name, email, and username are required.");
+                return;
+            }
+
+            Object[] types = {"user", "admin"};
+            String userType = (String) JOptionPane.showInputDialog(
+                    this, "User Type:", "Update User",
+                    JOptionPane.QUESTION_MESSAGE, null, types,
+                    (currentUserType == null ? "user" : currentUserType)
+            );
+            if (userType == null) return;
+
+            Object[] statuses = {"active", "pending"};
+            String status = (String) JOptionPane.showInputDialog(
+                    this, "Status:", "Update User",
+                    JOptionPane.QUESTION_MESSAGE, null, statuses,
+                    (currentStatus == null ? "pending" : currentStatus)
+            );
+            if (status == null) return;
+
+            // Prevent admin from making themselves pending by accident
+            if (this.adminId != 0 && userId.intValue() == this.adminId && status.equalsIgnoreCase("pending")) {
+                JOptionPane.showMessageDialog(this, "You can't set your own admin account to pending.");
+                return;
+            }
+
+            // Duplicate check excluding current user
+            try (PreparedStatement dup = conn.prepareStatement(
+                    "SELECT COUNT(*) AS cnt FROM tbl_register WHERE (email = ? OR username = ?) AND r_id <> ?")) {
+                dup.setString(1, email);
+                dup.setString(2, username);
+                dup.setInt(3, userId);
+                try (ResultSet rs = dup.executeQuery()) {
+                    if (rs.next() && rs.getInt("cnt") > 0) {
+                        JOptionPane.showMessageDialog(this, "Email or Username already exists.");
+                        return;
+                    }
+                }
+            }
+
+            try (PreparedStatement pst = conn.prepareStatement(
+                    "UPDATE tbl_register SET f_name=?, l_name=?, email=?, username=?, password=?, user_type=?, status=? WHERE r_id=?")) {
+                pst.setString(1, firstName);
+                pst.setString(2, lastName);
+                pst.setString(3, email);
+                pst.setString(4, username);
+                pst.setString(5, password);
+                pst.setString(6, userType);
+                pst.setString(7, status);
+                pst.setInt(8, userId);
+                int updated = pst.executeUpdate();
+                if (updated > 0) {
+                    JOptionPane.showMessageDialog(this, "User updated successfully.");
+                    displayUser();
+                } else {
+                    JOptionPane.showMessageDialog(this, "No user was updated.");
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error updating user: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        Integer userId = getSelectedUserId();
+        if (userId == null) {
+            JOptionPane.showMessageDialog(this, "Please select a user to delete.");
+            return;
+        }
+
+        if (this.adminId != 0 && userId.intValue() == this.adminId) {
+            JOptionPane.showMessageDialog(this, "You can't delete your own admin account.");
+            return;
+        }
+
+        int choice = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to delete this user (ID: " + userId + ")?",
+                "Delete Confirmation",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+        if (choice != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        try (Connection conn = config.connectDB();
+             PreparedStatement pst = conn.prepareStatement("DELETE FROM tbl_register WHERE r_id = ?")) {
+            if (conn == null) {
+                JOptionPane.showMessageDialog(this, "Database connection failed.");
+                return;
+            }
+            pst.setInt(1, userId);
+            int deleted = pst.executeUpdate();
+            if (deleted > 0) {
+                JOptionPane.showMessageDialog(this, "User deleted successfully.");
+                displayUser();
+            } else {
+                JOptionPane.showMessageDialog(this, "No user was deleted.");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error deleting user: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        Integer userId = getSelectedUserId();
+        if (userId == null) {
+            JOptionPane.showMessageDialog(this, "Please select a user to approve.");
+            return;
+        }
+
+        String status = getSelectedUserStatus();
+        if (status != null && status.equalsIgnoreCase("active")) {
+            JOptionPane.showMessageDialog(this, "This user is already approved.");
+            return;
+        }
+
+        // Optional safety: don't approve admins here
+        try (Connection conn = config.connectDB();
+             PreparedStatement check = conn.prepareStatement("SELECT user_type FROM tbl_register WHERE r_id = ?")) {
+            check.setInt(1, userId);
+            try (ResultSet rs = check.executeQuery()) {
+                if (rs.next()) {
+                    String type = rs.getString("user_type");
+                    if (type != null && type.equalsIgnoreCase("admin")) {
+                        JOptionPane.showMessageDialog(this, "Admin accounts don't need approval here.");
+                        return;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error checking user: " + e.getMessage());
+            return;
+        }
+
+        try (Connection conn = config.connectDB();
+             PreparedStatement pst = conn.prepareStatement("UPDATE tbl_register SET status = ? WHERE r_id = ?")) {
+            pst.setString(1, "active");
+            pst.setInt(2, userId);
+            int updated = pst.executeUpdate();
+            if (updated > 0) {
+                JOptionPane.showMessageDialog(this, "User approved successfully.");
+                displayUser();
+            } else {
+                JOptionPane.showMessageDialog(this, "No user was updated (maybe ID not found).");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error approving user: " + e.getMessage());
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -383,6 +733,7 @@ public class user extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

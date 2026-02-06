@@ -140,42 +140,39 @@ public class login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-try {
-    String sql = "SELECT * FROM tbl_register WHERE email=? AND password=?";
-    PreparedStatement pst = con.prepareStatement(sql);
-    pst.setString(1, email.getText());
-    pst.setString(2, new String(password.getPassword()));
+        String sql = "SELECT * FROM tbl_register WHERE email=? AND password=?";
+        try (PreparedStatement pst = con.prepareStatement(sql)) {
+            pst.setString(1, email.getText());
+            pst.setString(2, new String(password.getPassword()));
 
-    ResultSet rs = pst.executeQuery();
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    String userType = rs.getString("user_type"); // "admin" or "user"
+                    String status = rs.getString("status");       // "pending" or "active"
 
-    if (rs.next()) {
-        String userType = rs.getString("user_type"); // "admin" or "user"
-        String status = rs.getString("status");       // "pending" or "active"
+                    if (status == null || !status.equalsIgnoreCase("active")) {
+                        JOptionPane.showMessageDialog(this, "Your account is not yet approved by admin.");
+                        return;
+                    }
 
-        if (!status.equalsIgnoreCase("active")) {
-            JOptionPane.showMessageDialog(this, "Your account is not yet approved by admin.");
-            return;
-        }
+                    JOptionPane.showMessageDialog(this, "Login Successful!");
 
-        JOptionPane.showMessageDialog(this, "Login Successful!");
+                    // Open correct dashboard based on user type
+                    if (userType != null && userType.equalsIgnoreCase("admin")) {
+                        int adminId = rs.getInt("r_id");
+                        new dashboard(adminId).setVisible(true);   // Admin dashboard (with ID)
+                    } else if (userType != null && userType.equalsIgnoreCase("user")) {
+                        new usersdashboard().setVisible(true); // User dashboard
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Invalid user type.");
+                        return;
+                    }
 
-        // Open correct dashboard based on user type
-        if (userType.equalsIgnoreCase("admin")) {
-            new dashboard().setVisible(true);   // Admin dashboard
-        } else if (userType.equalsIgnoreCase("user")) {
-            // Make sure the import matches your package structure
-            new usersdashboard().setVisible(true); // User dashboard
-        }
-
-        this.dispose(); // Close login form
-
-    } else {
-        JOptionPane.showMessageDialog(this, "Invalid Email or Password");
-    }
-
-    rs.close();
-    pst.close();
-
+                    this.dispose(); // Close login form
+                } else {
+                    JOptionPane.showMessageDialog(this, "Invalid Email or Password");
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Database error: " + e.getMessage());

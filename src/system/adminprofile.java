@@ -325,7 +325,8 @@ public class adminprofile extends javax.swing.JFrame {
     }//GEN-LAST:event_dashboardMouseClicked
 
     private void dashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dashboardActionPerformed
-        // TODO add your handling code here:
+        new dashboard(this.adminId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_dashboardActionPerformed
 
     private void customerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerMouseClicked
@@ -370,7 +371,8 @@ public class adminprofile extends javax.swing.JFrame {
     }//GEN-LAST:event_userMouseClicked
 
     private void userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userActionPerformed
-        // TODO add your handling code here:
+        new user(this.adminId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_userActionPerformed
 
     private void profileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileMouseClicked

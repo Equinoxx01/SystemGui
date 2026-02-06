@@ -189,8 +189,10 @@ public class register extends javax.swing.JFrame {
             return;
         }
 
-        String sql = "INSERT INTO tbl_register(f_name, l_name, email, username, password) "
-        + "VALUES (?, ?, ?, ?, ?)";
+        // New users must be approved by admin first.
+        // We use existing columns: user_type and status.
+        String sql = "INSERT INTO tbl_register(f_name, l_name, email, username, password, user_type, status) "
+        + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = config.connectDB();
                 PreparedStatement pst = conn.prepareStatement(sql)) {
@@ -200,9 +202,11 @@ public class register extends javax.swing.JFrame {
                pst.setString(3, Email);
                pst.setString(4, userName);
                pst.setString(5, pass);
+               pst.setString(6, "user");
+               pst.setString(7, "pending");
 
                pst.executeUpdate();
-               JOptionPane.showMessageDialog(this, "Signup successful!");
+               JOptionPane.showMessageDialog(this, "Registration successful! Please wait for admin approval.");
 
                new login().setVisible(true);
                this.dispose();
