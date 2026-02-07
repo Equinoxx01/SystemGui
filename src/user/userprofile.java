@@ -5,27 +5,32 @@
  */
 package user;
 
-    import java.awt.Color;
-    import javax.swing.JButton;
-    import javax.swing.JOptionPane;
-    import system.login;
+import config.config;
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import system.login;
 
-public class usersdashboard extends javax.swing.JFrame {
-    
+/**
+ *
+ * @author USER10
+ */
+public class userprofile extends javax.swing.JFrame {
+
+    Color defaultColor = new Color(236, 240, 241);
+    Color activeColor = new Color(255, 204, 204);
+
     public int userId;
-    
-    Color defaultColor = new Color(236, 240, 241);   
-    Color activeColor  = new Color(255,204,204);
-    
-    public usersdashboard(int userId) {
-        this();
-        this.userId = userId;
-    }
-    
-    public usersdashboard() {
+
+    public userprofile(int r_id) {
         initComponents();
-        setTitle("User Dashboard");
-        
+        this.userId = r_id;
+        displayData();
+
         JButton[] buttons = { dashboard, customer, products, orders, profile, logout };
 
         for (JButton btn : buttons) {
@@ -33,23 +38,50 @@ public class usersdashboard extends javax.swing.JFrame {
             btn.setContentAreaFilled(true);
             btn.setBorderPainted(false);
             btn.setBackground(defaultColor);
+        }
     }
 
+    public void displayData() {
+        try (Connection conn = config.connectDB();
+             PreparedStatement pst = conn.prepareStatement(
+                 "SELECT * FROM tbl_register WHERE r_id = ?")) {
+
+            pst.setInt(1, userId);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                email.setText(rs.getString("email"));
+                username.setText(rs.getString("username"));
+                firstname.setText(rs.getString("f_name"));
+                lastname.setText(rs.getString("l_name"));
+                usertype.setText(rs.getString("user_type"));
+            } else {
+                JOptionPane.showMessageDialog(this, "No user found with ID: " + userId);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error fetching profile: " + e.getMessage());
+        }
     }
+
+    public userprofile() {
+        initComponents();
+        setTitle("My Profile");
+    }
+
     private void resetMenuColors() {
-    JButton[] buttons = {
-        dashboard,
-        customer,
-        products, 
-        orders,
-        profile,
-        logout,
-    };
+        JButton[] buttons = {
+            dashboard,
+            customer,
+            products,
+            orders,
+            profile,
+            logout
+        };
 
-    for (JButton btn : buttons) {
-        btn.setBackground(defaultColor);
-    }
-
+        for (JButton btn : buttons) {
+            btn.setBackground(defaultColor);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -65,7 +97,23 @@ public class usersdashboard extends javax.swing.JFrame {
         orders = new javax.swing.JButton();
         profile = new javax.swing.JButton();
         logout = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        firstname = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel7 = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        lastname = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jSeparator3 = new javax.swing.JSeparator();
+        username = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jSeparator4 = new javax.swing.JSeparator();
+        usertype = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        email = new javax.swing.JLabel();
+        jSeparator5 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -164,12 +212,58 @@ public class usersdashboard extends javax.swing.JFrame {
                 logoutActionPerformed(evt);
             }
         });
-        jPanel2.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 450, 150, 30));
+        jPanel2.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 440, 150, 30));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 380, 500));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/dashbg.png"))); // NOI18N
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 0, 630, 500));
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabel2.setText("My Profile");
+        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 210, 67));
+
+        jLabel3.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel3.setText("First Name");
+        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 120, 20));
+
+        firstname.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jPanel3.add(firstname, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 200, 30));
+        jPanel3.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 200, 10));
+
+        jLabel7.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel7.setText("Last Name");
+        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 100, 120, -1));
+        jPanel3.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 150, 200, 10));
+
+        lastname.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jPanel3.add(lastname, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 120, 200, 30));
+
+        jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel6.setText("Username");
+        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 120, -1));
+        jPanel3.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 200, 10));
+
+        username.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jPanel3.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 200, 30));
+
+        jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel5.setText("User Type");
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 190, 120, -1));
+        jPanel3.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 240, 200, 10));
+
+        usertype.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jPanel3.add(usertype, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 210, 200, 30));
+
+        jLabel4.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel4.setText("Email");
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 120, -1));
+
+        email.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jPanel3.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 470, 30));
+        jPanel3.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, 470, 10));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 0, 630, 500));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -191,7 +285,8 @@ public class usersdashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_dashboardMouseClicked
 
     private void dashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dashboardActionPerformed
-        // TODO add your handling code here:
+        new dashboard(this.adminId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_dashboardActionPerformed
 
     private void customerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerMouseClicked
@@ -222,13 +317,12 @@ public class usersdashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_ordersActionPerformed
 
     private void profileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileMouseClicked
-        new userprofile(this.userId).setVisible(true);
+        new adminprofile(this.adminId).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_profileMouseClicked
 
     private void profileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileActionPerformed
-        new userprofile(this.userId).setVisible(true);
-        this.dispose();
+        // TODO add your handling code here:
     }//GEN-LAST:event_profileActionPerformed
 
     private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
@@ -256,12 +350,12 @@ public class usersdashboard extends javax.swing.JFrame {
                 }
             }
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(usersdashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(userprofile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new usersdashboard(1).setVisible(true);
+                new userprofile(1).setVisible(true);
             }
         });
     }
@@ -269,13 +363,29 @@ public class usersdashboard extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton customer;
     private javax.swing.JButton dashboard;
+    private javax.swing.JLabel email;
+    private javax.swing.JLabel firstname;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JLabel lastname;
     private javax.swing.JButton logout;
     private javax.swing.JButton orders;
     private javax.swing.JButton products;
     private javax.swing.JButton profile;
+    private javax.swing.JLabel username;
+    private javax.swing.JLabel usertype;
     // End of variables declaration//GEN-END:variables
 }
