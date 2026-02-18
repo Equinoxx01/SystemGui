@@ -212,6 +212,7 @@ public class usersdashboard extends javax.swing.JFrame {
         );
 
         if (choice == JOptionPane.YES_OPTION) {
+            system.Session.clearSession();
             login lg = new login();
             lg.setVisible(true);
             this.dispose();
@@ -246,9 +247,14 @@ public class usersdashboard extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the form - required login */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                if (!system.Session.isLoggedIn()) {
+                    javax.swing.JOptionPane.showMessageDialog(null, "You must log in first to access the system.", "Login Required", javax.swing.JOptionPane.WARNING_MESSAGE);
+                    new system.login().setVisible(true);
+                    return;
+                }
                 new usersdashboard().setVisible(true);
             }
         });

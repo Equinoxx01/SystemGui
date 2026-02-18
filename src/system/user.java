@@ -270,11 +270,6 @@ public class user extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButton1.setText("ADD");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 100, 110, 33));
 
         jButton2.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -308,7 +303,7 @@ public class user extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -374,6 +369,7 @@ public class user extends javax.swing.JFrame {
         );
 
         if (choice == JOptionPane.YES_OPTION) {
+            Session.clearSession();
             login lg = new login();
             lg.setVisible(true);
             this.dispose();
@@ -718,10 +714,15 @@ public class user extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the form - required login (admin) */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new user().setVisible(true);
+                if (!Session.isLoggedIn() || !Session.isAdmin()) {
+                    JOptionPane.showMessageDialog(null, "You must log in first to access the system.", "Login Required", JOptionPane.WARNING_MESSAGE);
+                    new login().setVisible(true);
+                    return;
+                }
+                new user(Session.getUserId()).setVisible(true);
             }
         });
     }

@@ -157,10 +157,12 @@ public class login extends javax.swing.JFrame {
 
                     JOptionPane.showMessageDialog(this, "Login Successful!");
 
+                    int id = rs.getInt("r_id");
+                    Session.setSession(id, userType);
+
                     // Open correct dashboard based on user type
                     if (userType != null && userType.equalsIgnoreCase("admin")) {
-                        int adminId = rs.getInt("r_id");
-                        new dashboard(adminId).setVisible(true);   // Admin dashboard (with ID)
+                        new dashboard(id).setVisible(true);   // Admin dashboard (with ID)
                     } else if (userType != null && userType.equalsIgnoreCase("user")) {
                         new usersdashboard().setVisible(true); // User dashboard
                     } else {

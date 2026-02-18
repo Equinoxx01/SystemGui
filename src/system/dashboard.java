@@ -24,7 +24,9 @@ public class dashboard extends javax.swing.JFrame {
     public dashboard() {
         initComponents();
         setTitle("Dashboard");
-        
+        if (Session.isLoggedIn() && Session.isAdmin()) {
+            this.adminId = Session.getUserId();
+        }
         JButton[] buttons = { dashboard, customer, products, orders, reports, user, logout };
 
         for (JButton btn : buttons) {
@@ -287,6 +289,7 @@ public class dashboard extends javax.swing.JFrame {
         );
 
         if (choice == JOptionPane.YES_OPTION) {
+            Session.clearSession();
             login lg = new login();
             lg.setVisible(true);
             this.dispose();
@@ -330,10 +333,15 @@ public class dashboard extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the form - required login */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new dashboard().setVisible(true);
+                if (!Session.isLoggedIn() || !Session.isAdmin()) {
+                    JOptionPane.showMessageDialog(null, "You must log in first to access the system.", "Login Required", JOptionPane.WARNING_MESSAGE);
+                    new login().setVisible(true);
+                    return;
+                }
+                new dashboard(Session.getUserId()).setVisible(true);
             }
         });
     }

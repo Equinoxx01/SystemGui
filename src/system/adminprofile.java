@@ -394,6 +394,7 @@ public class adminprofile extends javax.swing.JFrame {
         );
 
         if (choice == JOptionPane.YES_OPTION) {
+            Session.clearSession();
             login lg = new login();
             lg.setVisible(true);
             this.dispose();
@@ -427,10 +428,15 @@ public class adminprofile extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the form - required login (admin) */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new adminprofile().setVisible(true);
+                if (!Session.isLoggedIn() || !Session.isAdmin()) {
+                    JOptionPane.showMessageDialog(null, "You must log in first to access the system.", "Login Required", JOptionPane.WARNING_MESSAGE);
+                    new login().setVisible(true);
+                    return;
+                }
+                new adminprofile(Session.getUserId()).setVisible(true);
             }
         });
     }
