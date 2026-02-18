@@ -164,7 +164,8 @@ public class login extends javax.swing.JFrame {
                     if (userType != null && userType.equalsIgnoreCase("admin")) {
                         new dashboard(id).setVisible(true);   // Admin dashboard (with ID)
                     } else if (userType != null && userType.equalsIgnoreCase("user")) {
-                        new usersdashboard().setVisible(true); // User dashboard
+                        int userId = rs.getInt("r_id");
+                        new usersdashboard(userId).setVisible(true); // User dashboard
                     } else {
                         JOptionPane.showMessageDialog(this, "Invalid user type.");
                         return;
