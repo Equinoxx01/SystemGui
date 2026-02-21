@@ -1,14 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package user;
 
+    import config.config;
     import java.awt.Color;
     import javax.swing.JButton;
     import javax.swing.JOptionPane;
+    import system.dashboard;
     import system.login;
+  
+
 
 public class usersdashboard extends javax.swing.JFrame {
     
@@ -26,7 +26,7 @@ public class usersdashboard extends javax.swing.JFrame {
         initComponents();
         setTitle("User Dashboard");
         
-        JButton[] buttons = { dashboard, customer, products, orders, profile, logout };
+        JButton[] buttons = { dashboard, products, orders, profile, logout };
 
         for (JButton btn : buttons) {
             btn.setOpaque(true);
@@ -39,7 +39,7 @@ public class usersdashboard extends javax.swing.JFrame {
     private void resetMenuColors() {
     JButton[] buttons = {
         dashboard,
-        customer,
+        
         products, 
         orders,
         profile,
@@ -60,7 +60,6 @@ public class usersdashboard extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         dashboard = new javax.swing.JButton();
-        customer = new javax.swing.JButton();
         products = new javax.swing.JButton();
         orders = new javax.swing.JButton();
         profile = new javax.swing.JButton();
@@ -95,21 +94,6 @@ public class usersdashboard extends javax.swing.JFrame {
         });
         jPanel2.add(dashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, 150, 30));
 
-        customer.setBackground(new java.awt.Color(255, 255, 255));
-        customer.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        customer.setText("Customer");
-        customer.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                customerMouseClicked(evt);
-            }
-        });
-        customer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                customerActionPerformed(evt);
-            }
-        });
-        jPanel2.add(customer, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 150, 30));
-
         products.setBackground(new java.awt.Color(255, 255, 255));
         products.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         products.setText("Products");
@@ -123,7 +107,7 @@ public class usersdashboard extends javax.swing.JFrame {
                 productsActionPerformed(evt);
             }
         });
-        jPanel2.add(products, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 150, 30));
+        jPanel2.add(products, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 150, 30));
 
         orders.setBackground(new java.awt.Color(255, 255, 255));
         orders.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -138,7 +122,7 @@ public class usersdashboard extends javax.swing.JFrame {
                 ordersActionPerformed(evt);
             }
         });
-        jPanel2.add(orders, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
+        jPanel2.add(orders, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 150, 30));
 
         profile.setBackground(new java.awt.Color(255, 255, 255));
         profile.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -153,7 +137,7 @@ public class usersdashboard extends javax.swing.JFrame {
                 profileActionPerformed(evt);
             }
         });
-        jPanel2.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 150, 30));
+        jPanel2.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
 
         logout.setBackground(new java.awt.Color(255, 51, 51));
         logout.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -193,15 +177,6 @@ public class usersdashboard extends javax.swing.JFrame {
     private void dashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dashboardActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_dashboardActionPerformed
-
-    private void customerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerMouseClicked
-        resetMenuColors();
-        customer.setBackground(activeColor);
-    }//GEN-LAST:event_customerMouseClicked
-
-    private void customerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_customerActionPerformed
 
     private void productsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productsMouseClicked
         resetMenuColors();
@@ -260,7 +235,7 @@ public class usersdashboard extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(usersdashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-<<<<<<< HEAD
+
         /* Create and display the form - required login */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -269,18 +244,12 @@ public class usersdashboard extends javax.swing.JFrame {
                     new system.login().setVisible(true);
                     return;
                 }
-                new usersdashboard().setVisible(true);
-=======
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new usersdashboard(1).setVisible(true);
->>>>>>> 216484207eeb75c859ca6e8bbb51326dd1974394
+                new usersdashboard(system.Session.getUserId()).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton customer;
     private javax.swing.JButton dashboard;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

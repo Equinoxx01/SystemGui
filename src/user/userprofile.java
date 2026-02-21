@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import system.Session;
 import system.login;
 
 /**
@@ -31,7 +32,7 @@ public class userprofile extends javax.swing.JFrame {
         this.userId = r_id;
         displayData();
 
-        JButton[] buttons = { dashboard, customer, products, orders, profile, logout };
+        JButton[] buttons = { dashboard, products, orders, profile, logout };
 
         for (JButton btn : buttons) {
             btn.setOpaque(true);
@@ -67,12 +68,22 @@ public class userprofile extends javax.swing.JFrame {
     public userprofile() {
         initComponents();
         setTitle("My Profile");
+        if (Session.isLoggedIn()) {
+            this.userId = Session.getUserId();
+            displayData();
+        }
+        JButton[] buttons = { dashboard, products, orders, profile, logout };
+        for (JButton btn : buttons) {
+            btn.setOpaque(true);
+            btn.setContentAreaFilled(true);
+            btn.setBorderPainted(false);
+            btn.setBackground(defaultColor);
+        }
     }
 
     private void resetMenuColors() {
         JButton[] buttons = {
-            dashboard,
-            customer,
+            dashboard,   
             products,
             orders,
             profile,
@@ -92,7 +103,6 @@ public class userprofile extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         dashboard = new javax.swing.JButton();
-        customer = new javax.swing.JButton();
         products = new javax.swing.JButton();
         orders = new javax.swing.JButton();
         profile = new javax.swing.JButton();
@@ -143,21 +153,6 @@ public class userprofile extends javax.swing.JFrame {
         });
         jPanel2.add(dashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, 150, 30));
 
-        customer.setBackground(new java.awt.Color(255, 255, 255));
-        customer.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        customer.setText("Customer");
-        customer.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                customerMouseClicked(evt);
-            }
-        });
-        customer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                customerActionPerformed(evt);
-            }
-        });
-        jPanel2.add(customer, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 150, 30));
-
         products.setBackground(new java.awt.Color(255, 255, 255));
         products.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         products.setText("Products");
@@ -171,7 +166,7 @@ public class userprofile extends javax.swing.JFrame {
                 productsActionPerformed(evt);
             }
         });
-        jPanel2.add(products, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 150, 30));
+        jPanel2.add(products, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 150, 30));
 
         orders.setBackground(new java.awt.Color(255, 255, 255));
         orders.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -186,7 +181,7 @@ public class userprofile extends javax.swing.JFrame {
                 ordersActionPerformed(evt);
             }
         });
-        jPanel2.add(orders, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
+        jPanel2.add(orders, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 150, 30));
 
         profile.setBackground(new java.awt.Color(255, 255, 255));
         profile.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -201,7 +196,7 @@ public class userprofile extends javax.swing.JFrame {
                 profileActionPerformed(evt);
             }
         });
-        jPanel2.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 150, 30));
+        jPanel2.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
 
         logout.setBackground(new java.awt.Color(255, 51, 51));
         logout.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -285,18 +280,9 @@ public class userprofile extends javax.swing.JFrame {
     }//GEN-LAST:event_dashboardMouseClicked
 
     private void dashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dashboardActionPerformed
-        new dashboard(this.adminId).setVisible(true);
+        new usersdashboard(this.userId).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_dashboardActionPerformed
-
-    private void customerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerMouseClicked
-        resetMenuColors();
-        customer.setBackground(activeColor);
-    }//GEN-LAST:event_customerMouseClicked
-
-    private void customerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_customerActionPerformed
 
     private void productsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productsMouseClicked
         resetMenuColors();
@@ -317,7 +303,7 @@ public class userprofile extends javax.swing.JFrame {
     }//GEN-LAST:event_ordersActionPerformed
 
     private void profileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileMouseClicked
-        new adminprofile(this.adminId).setVisible(true);
+        new userprofile(this.userId).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_profileMouseClicked
 
@@ -335,6 +321,7 @@ public class userprofile extends javax.swing.JFrame {
         );
 
         if (choice == JOptionPane.YES_OPTION) {
+            Session.clearSession();
             login lg = new login();
             lg.setVisible(true);
             this.dispose();
@@ -355,13 +342,17 @@ public class userprofile extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new userprofile(1).setVisible(true);
+                if (!Session.isLoggedIn()) {
+                    javax.swing.JOptionPane.showMessageDialog(null, "You must log in first to access your profile.", "Login Required", javax.swing.JOptionPane.WARNING_MESSAGE);
+                    new system.login().setVisible(true);
+                    return;
+                }
+                new userprofile(Session.getUserId()).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton customer;
     private javax.swing.JButton dashboard;
     private javax.swing.JLabel email;
     private javax.swing.JLabel firstname;

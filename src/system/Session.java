@@ -1,9 +1,6 @@
 package system;
 
-/**
- * Session management: holds current user after login, cleared on logout.
- * Enforces "required login" for protected screens.
- */
+
 public class Session {
 
     private static int userId;
