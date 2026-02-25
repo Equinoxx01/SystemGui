@@ -67,10 +67,25 @@ public void displayData(String sql, javax.swing.JTable table) {
     try (Connection conn = connectDB();
          PreparedStatement pstmt = conn.prepareStatement(sql);
          ResultSet rs = pstmt.executeQuery()) {
-        
-        // This line automatically maps the Resultset to your JTable
+
         table.setModel(DbUtils.resultSetToTableModel(rs));
-        
+
+    } catch (SQLException e) {
+        System.out.println("Error displaying data: " + e.getMessage());
+    }
+}
+
+public void displayData(String sql, javax.swing.JTable table, Object... params) {
+    try (Connection conn = connectDB();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        for (int i = 0; i < params.length; i++) {
+            pstmt.setObject(i + 1, params[i]);
+        }
+
+        try (ResultSet rs = pstmt.executeQuery()) {
+            table.setModel(DbUtils.resultSetToTableModel(rs));
+        }
     } catch (SQLException e) {
         System.out.println("Error displaying data: " + e.getMessage());
     }

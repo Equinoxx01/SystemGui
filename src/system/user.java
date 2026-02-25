@@ -7,12 +7,17 @@ package system;
 
     import config.config;
     import java.awt.Color;
+    import java.awt.GridLayout;
     import java.sql.Connection;
     import java.sql.PreparedStatement;
     import java.sql.ResultSet;
     import java.sql.SQLException;
     import javax.swing.JButton;
+    import javax.swing.JComboBox;
+    import javax.swing.JLabel;
     import javax.swing.JOptionPane;
+    import javax.swing.JPanel;
+    import javax.swing.JTextField;
     
 public class user extends javax.swing.JFrame {
 
@@ -118,9 +123,11 @@ public class user extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         usertable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -266,20 +273,16 @@ public class user extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(usertable1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 150, 630, 90));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 210, 630, 90));
 
         jButton1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButton1.setText("ADD");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 100, 110, 33));
-
-        jButton2.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jButton2.setText("UPDATE");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 100, 110, 30));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 100, 110, 33));
 
         jButton3.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButton3.setText("DELETE");
@@ -288,7 +291,7 @@ public class user extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 100, 110, 33));
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 100, 110, 33));
 
         jButton4.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButton4.setText("APPROVE");
@@ -297,7 +300,32 @@ public class user extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 100, 110, 33));
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 100, 110, 33));
+
+        jButton5.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jButton5.setText("UPDATE");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 100, 110, 33));
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 150, 230, 30));
+
+        jButton2.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jButton2.setText("SEARCH");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 150, 110, 33));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -396,44 +424,58 @@ public class user extends javax.swing.JFrame {
     }//GEN-LAST:event_userActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String firstName = JOptionPane.showInputDialog(this, "First Name:");
-        if (firstName == null) return;
-        firstName = firstName.trim();
+        JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
 
-        String lastName = JOptionPane.showInputDialog(this, "Last Name:");
-        if (lastName == null) return;
-        lastName = lastName.trim();
+        JTextField firstNameField = new JTextField();
+        JTextField lastNameField = new JTextField();
+        JTextField emailField = new JTextField();
+        JTextField usernameField = new JTextField();
+        JTextField passwordField = new JTextField();
 
-        String email = JOptionPane.showInputDialog(this, "Email:");
-        if (email == null) return;
-        email = email.trim();
+        JComboBox<String> userTypeBox = new JComboBox<>(new String[] { "user", "admin" });
+        JComboBox<String> statusBox = new JComboBox<>(new String[] { "active", "pending" });
 
-        String username = JOptionPane.showInputDialog(this, "Username:");
-        if (username == null) return;
-        username = username.trim();
+        panel.add(new JLabel("First Name:"));
+        panel.add(firstNameField);
+        panel.add(new JLabel("Last Name:"));
+        panel.add(lastNameField);
+        panel.add(new JLabel("Email:"));
+        panel.add(emailField);
+        panel.add(new JLabel("Username:"));
+        panel.add(usernameField);
+        panel.add(new JLabel("Password:"));
+        panel.add(passwordField);
+        panel.add(new JLabel("User Type:"));
+        panel.add(userTypeBox);
+        panel.add(new JLabel("Status:"));
+        panel.add(statusBox);
 
-        String password = JOptionPane.showInputDialog(this, "Password:");
-        if (password == null) return;
-        password = password.trim();
+        int result = JOptionPane.showConfirmDialog(
+                this,
+                panel,
+                "Add User",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
 
-        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "All fields are required.");
+        if (result != JOptionPane.OK_OPTION) {
             return;
         }
 
-        Object[] types = {"user", "admin"};
-        String userType = (String) JOptionPane.showInputDialog(
-                this, "User Type:", "Add User",
-                JOptionPane.QUESTION_MESSAGE, null, types, "user"
-        );
-        if (userType == null) return;
+        String firstName = firstNameField.getText().trim();
+        String lastName = lastNameField.getText().trim();
+        String email = emailField.getText().trim();
+        String username = usernameField.getText().trim();
+        String password = passwordField.getText().trim();
+        String userType = userTypeBox.getSelectedItem() == null ? "" : userTypeBox.getSelectedItem().toString();
+        String status = statusBox.getSelectedItem() == null ? "" : statusBox.getSelectedItem().toString();
 
-        Object[] statuses = {"active", "pending"};
-        String status = (String) JOptionPane.showInputDialog(
-                this, "Status:", "Add User",
-                JOptionPane.QUESTION_MESSAGE, null, statuses, "active"
-        );
-        if (status == null) return;
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() ||
+                username.isEmpty() || password.isEmpty() ||
+                userType.isEmpty() || status.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "All fields are required.");
+            return;
+        }
 
         try (Connection conn = config.connectDB()) {
             if (conn == null) {
@@ -441,14 +483,13 @@ public class user extends javax.swing.JFrame {
                 return;
             }
 
-            // Basic duplicate check (email or username)
+            // Basic duplicate check (email only)
             try (PreparedStatement dup = conn.prepareStatement(
-                    "SELECT COUNT(*) AS cnt FROM tbl_register WHERE email = ? OR username = ?")) {
+                    "SELECT COUNT(*) AS cnt FROM tbl_register WHERE email = ?")) {
                 dup.setString(1, email);
-                dup.setString(2, username);
                 try (ResultSet rs = dup.executeQuery()) {
                     if (rs.next() && rs.getInt("cnt") > 0) {
-                        JOptionPane.showMessageDialog(this, "Email or Username already exists.");
+                        JOptionPane.showMessageDialog(this, "Email already exists.");
                         return;
                     }
                 }
@@ -473,7 +514,7 @@ public class user extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         Integer userId = getSelectedUserId();
         if (userId == null) {
             JOptionPane.showMessageDialog(this, "Please select a user to update.");
@@ -512,49 +553,68 @@ public class user extends javax.swing.JFrame {
                 }
             }
 
-            String firstName = JOptionPane.showInputDialog(this, "First Name:", currentFirstName);
-            if (firstName == null) return;
-            firstName = firstName.trim();
+            JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
 
-            String lastName = JOptionPane.showInputDialog(this, "Last Name:", currentLastName);
-            if (lastName == null) return;
-            lastName = lastName.trim();
+            JTextField firstNameField = new JTextField(currentFirstName == null ? "" : currentFirstName);
+            JTextField lastNameField = new JTextField(currentLastName == null ? "" : currentLastName);
+            JTextField emailField = new JTextField(currentEmail == null ? "" : currentEmail);
+            JTextField usernameField = new JTextField(currentUsername == null ? "" : currentUsername);
+            JTextField passwordField = new JTextField(); // leave blank to keep current
 
-            String email = JOptionPane.showInputDialog(this, "Email:", currentEmail);
-            if (email == null) return;
-            email = email.trim();
+            JComboBox<String> userTypeBox = new JComboBox<>(new String[] { "user", "admin" });
+            if (currentUserType != null) {
+                userTypeBox.setSelectedItem(currentUserType);
+            }
 
-            String username = JOptionPane.showInputDialog(this, "Username:", currentUsername);
-            if (username == null) return;
-            username = username.trim();
+            JComboBox<String> statusBox = new JComboBox<>(new String[] { "active", "pending" });
+            if (currentStatus != null) {
+                statusBox.setSelectedItem(currentStatus);
+            }
 
-            String password = JOptionPane.showInputDialog(this, "New Password (leave blank to keep current):", "");
-            if (password == null) return;
-            password = password.trim();
+            panel.add(new JLabel("First Name:"));
+            panel.add(firstNameField);
+            panel.add(new JLabel("Last Name:"));
+            panel.add(lastNameField);
+            panel.add(new JLabel("Email:"));
+            panel.add(emailField);
+            panel.add(new JLabel("Username:"));
+            panel.add(usernameField);
+            panel.add(new JLabel("New Password (leave blank to keep current):"));
+            panel.add(passwordField);
+            panel.add(new JLabel("User Type:"));
+            panel.add(userTypeBox);
+            panel.add(new JLabel("Status:"));
+            panel.add(statusBox);
+
+            int result = JOptionPane.showConfirmDialog(
+                    this,
+                    panel,
+                    "Update User",
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.PLAIN_MESSAGE
+            );
+
+            if (result != JOptionPane.OK_OPTION) {
+                return;
+            }
+
+            String firstName = firstNameField.getText().trim();
+            String lastName = lastNameField.getText().trim();
+            String email = emailField.getText().trim();
+            String username = usernameField.getText().trim();
+            String password = passwordField.getText().trim();
             if (password.isEmpty()) {
                 password = currentPassword;
             }
 
-            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || username.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "First name, last name, email, and username are required.");
+            String userType = userTypeBox.getSelectedItem() == null ? "" : userTypeBox.getSelectedItem().toString();
+            String status = statusBox.getSelectedItem() == null ? "" : statusBox.getSelectedItem().toString();
+
+            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() ||
+                    username.isEmpty() || userType.isEmpty() || status.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "All fields except password are required.");
                 return;
             }
-
-            Object[] types = {"user", "admin"};
-            String userType = (String) JOptionPane.showInputDialog(
-                    this, "User Type:", "Update User",
-                    JOptionPane.QUESTION_MESSAGE, null, types,
-                    (currentUserType == null ? "user" : currentUserType)
-            );
-            if (userType == null) return;
-
-            Object[] statuses = {"active", "pending"};
-            String status = (String) JOptionPane.showInputDialog(
-                    this, "Status:", "Update User",
-                    JOptionPane.QUESTION_MESSAGE, null, statuses,
-                    (currentStatus == null ? "pending" : currentStatus)
-            );
-            if (status == null) return;
 
             // Prevent admin from making themselves pending by accident
             if (this.adminId != 0 && userId.intValue() == this.adminId && status.equalsIgnoreCase("pending")) {
@@ -562,15 +622,14 @@ public class user extends javax.swing.JFrame {
                 return;
             }
 
-            // Duplicate check excluding current user
+            // Duplicate email check excluding current user
             try (PreparedStatement dup = conn.prepareStatement(
-                    "SELECT COUNT(*) AS cnt FROM tbl_register WHERE (email = ? OR username = ?) AND r_id <> ?")) {
+                    "SELECT COUNT(*) AS cnt FROM tbl_register WHERE email = ? AND r_id <> ?")) {
                 dup.setString(1, email);
-                dup.setString(2, username);
-                dup.setInt(3, userId);
+                dup.setInt(2, userId);
                 try (ResultSet rs = dup.executeQuery()) {
                     if (rs.next() && rs.getInt("cnt") > 0) {
-                        JOptionPane.showMessageDialog(this, "Email or Username already exists.");
+                        JOptionPane.showMessageDialog(this, "Email already exists.");
                         return;
                     }
                 }
@@ -597,7 +656,7 @@ public class user extends javax.swing.JFrame {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Error updating user: " + e.getMessage());
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         Integer userId = getSelectedUserId();
@@ -688,6 +747,29 @@ public class user extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String keyword = jTextField1.getText().trim();
+
+        if (keyword.isEmpty()) {
+            displayUser();
+            return;
+        }
+
+        String sql = "SELECT r_id AS 'ID', f_name AS 'First Name', l_name AS 'Last Name', "
+                + "email AS 'Email', username AS 'Username', user_type AS 'Type', status AS 'Status' "
+                + "FROM tbl_register "
+                + "WHERE f_name LIKE ? OR l_name LIKE ? OR email LIKE ? OR username LIKE ? "
+                + "ORDER BY r_id DESC";
+
+        String like = "%" + keyword + "%";
+        config con = new config();
+        con.displayData(sql, usertable1, like, like, like, like);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        jButton2ActionPerformed(evt);
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -736,10 +818,12 @@ public class user extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton logout;
     private javax.swing.JButton orders;
     private javax.swing.JButton products;
