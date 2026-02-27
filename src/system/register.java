@@ -73,7 +73,6 @@ public class register extends javax.swing.JFrame {
         jPanel1.add(lname, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 140, 311, 40));
 
         emails.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        emails.setForeground(new java.awt.Color(51, 51, 51));
         emails.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         emails.setText("Email:");
         jPanel1.add(emails, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 210, 110, 30));

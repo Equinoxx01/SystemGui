@@ -35,7 +35,7 @@ public class user extends javax.swing.JFrame {
         this.adminId = adminId;
         displayUser();
         
-        JButton[] buttons = { dashboard, customer, products, orders, reports, user, logout };
+        JButton[] buttons = { dashboard,  products,  reports, user, logout };
 
         for (JButton btn : buttons) {
             btn.setOpaque(true);
@@ -46,10 +46,8 @@ public class user extends javax.swing.JFrame {
     }
     private void resetMenuColors() {
     JButton[] buttons = {
-        dashboard, 
-        customer,
-        products, 
-        orders,
+        dashboard,    
+        products,  
         reports,
         user,
         logout,
@@ -113,24 +111,23 @@ public class user extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         dashboard = new javax.swing.JButton();
-        customer = new javax.swing.JButton();
         products = new javax.swing.JButton();
-        orders = new javax.swing.JButton();
         reports = new javax.swing.JButton();
         logout = new javax.swing.JButton();
         adminprofile = new javax.swing.JButton();
         user = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         usertable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        add = new javax.swing.JButton();
+        delete = new javax.swing.JButton();
+        approve = new javax.swing.JButton();
+        update = new javax.swing.JButton();
+        searchuser = new javax.swing.JTextField();
+        search = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(255, 204, 204));
@@ -157,21 +154,6 @@ public class user extends javax.swing.JFrame {
         });
         jPanel2.add(dashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, 150, 30));
 
-        customer.setBackground(new java.awt.Color(255, 255, 255));
-        customer.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        customer.setText("Customer");
-        customer.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                customerMouseClicked(evt);
-            }
-        });
-        customer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                customerActionPerformed(evt);
-            }
-        });
-        jPanel2.add(customer, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 150, 30));
-
         products.setBackground(new java.awt.Color(255, 255, 255));
         products.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         products.setText("Products");
@@ -185,22 +167,7 @@ public class user extends javax.swing.JFrame {
                 productsActionPerformed(evt);
             }
         });
-        jPanel2.add(products, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 150, 30));
-
-        orders.setBackground(new java.awt.Color(255, 255, 255));
-        orders.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        orders.setText("Orders");
-        orders.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ordersMouseClicked(evt);
-            }
-        });
-        orders.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ordersActionPerformed(evt);
-            }
-        });
-        jPanel2.add(orders, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
+        jPanel2.add(products, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 150, 30));
 
         reports.setBackground(new java.awt.Color(255, 255, 255));
         reports.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -215,7 +182,7 @@ public class user extends javax.swing.JFrame {
                 reportsActionPerformed(evt);
             }
         });
-        jPanel2.add(reports, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 150, 30));
+        jPanel2.add(reports, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 150, 30));
 
         logout.setBackground(new java.awt.Color(255, 51, 51));
         logout.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -241,7 +208,7 @@ public class user extends javax.swing.JFrame {
                 adminprofileActionPerformed(evt);
             }
         });
-        jPanel2.add(adminprofile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 370, 150, 30));
+        jPanel2.add(adminprofile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 150, 30));
 
         user.setBackground(new java.awt.Color(255, 255, 255));
         user.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -256,7 +223,7 @@ public class user extends javax.swing.JFrame {
                 userActionPerformed(evt);
             }
         });
-        jPanel2.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 320, 150, 30));
+        jPanel2.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 380, 500));
 
@@ -275,57 +242,57 @@ public class user extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 210, 630, 90));
 
-        jButton1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jButton1.setText("ADD");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        add.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        add.setText("ADD");
+        add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                addActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 100, 110, 33));
+        jPanel1.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 100, 110, 33));
 
-        jButton3.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jButton3.setText("DELETE");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        delete.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        delete.setText("DELETE");
+        delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                deleteActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 100, 110, 33));
+        jPanel1.add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 100, 110, 33));
 
-        jButton4.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jButton4.setText("APPROVE");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        approve.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        approve.setText("APPROVE");
+        approve.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                approveActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 100, 110, 33));
+        jPanel1.add(approve, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 100, 110, 33));
 
-        jButton5.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jButton5.setText("UPDATE");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 100, 110, 33));
+        update.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        update.setText("UPDATE");
+        jPanel1.add(update, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 100, 110, 33));
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        searchuser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                searchuserActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 150, 230, 30));
+        searchuser.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchuserKeyReleased(evt);
+            }
+        });
+        jPanel1.add(searchuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 150, 230, 30));
 
-        jButton2.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jButton2.setText("SEARCH");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        search.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        search.setText("SEARCH");
+        search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                searchActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 150, 110, 33));
+        jPanel1.add(search, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 150, 110, 33));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -352,32 +319,15 @@ public class user extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_dashboardActionPerformed
 
-    private void customerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerMouseClicked
-        resetMenuColors();
-        customer.setBackground(activeColor);
-    }//GEN-LAST:event_customerMouseClicked
-
-    private void customerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_customerActionPerformed
-
     private void productsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productsMouseClicked
         resetMenuColors();
         products.setBackground(activeColor);
     }//GEN-LAST:event_productsMouseClicked
 
     private void productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productsActionPerformed
-        // TODO add your handling code here:
+        new prodcutsadmin(this.adminId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_productsActionPerformed
-
-    private void ordersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ordersMouseClicked
-        resetMenuColors();
-        orders.setBackground(activeColor);
-    }//GEN-LAST:event_ordersMouseClicked
-
-    private void ordersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordersActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ordersActionPerformed
 
     private void reportsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportsMouseClicked
         resetMenuColors();
@@ -385,7 +335,8 @@ public class user extends javax.swing.JFrame {
     }//GEN-LAST:event_reportsMouseClicked
 
     private void reportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportsActionPerformed
-        // TODO add your handling code here:
+        new Reports(this.adminId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_reportsActionPerformed
 
     private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
@@ -422,6 +373,38 @@ public class user extends javax.swing.JFrame {
     private void userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_userActionPerformed
+
+    private void addActionPerformed(java.awt.event.ActionEvent evt) {
+        jButton1ActionPerformed(evt);
+    }
+
+    private void updateActionPerformed(java.awt.event.ActionEvent evt) {
+        jButton5ActionPerformed(evt);
+    }
+
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {
+        jButton3ActionPerformed(evt);
+    }
+
+    private void approveActionPerformed(java.awt.event.ActionEvent evt) {
+        jButton4ActionPerformed(evt);
+    }
+
+    private void searchActionPerformed(java.awt.event.ActionEvent evt) {
+        String keyword = searchuser.getText().trim();
+        if (keyword.isEmpty()) {
+            displayUser();
+            return;
+        }
+        String sql = "SELECT r_id AS 'ID', f_name AS 'First Name', l_name AS 'Last Name', "
+                + "email AS 'Email', username AS 'Username', user_type AS 'Type', status AS 'Status' "
+                + "FROM tbl_register "
+                + "WHERE f_name LIKE ? OR l_name LIKE ? OR email LIKE ? OR username LIKE ? "
+                + "ORDER BY r_id DESC";
+        String like = "%" + keyword + "%";
+        config con = new config();
+        con.displayData(sql, usertable1, like, like, like, like);
+    }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
@@ -748,7 +731,7 @@ public class user extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String keyword = jTextField1.getText().trim();
+        String keyword = searchuser.getText().trim();
 
         if (keyword.isEmpty()) {
             displayUser();
@@ -767,8 +750,12 @@ public class user extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        jButton2ActionPerformed(evt);
+        searchActionPerformed(evt);
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void searchuserKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchuserKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchuserKeyReleased
 
     /**
      * @param args the command line arguments
@@ -811,23 +798,21 @@ public class user extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton add;
     private javax.swing.JButton adminprofile;
-    private javax.swing.JButton customer;
+    private javax.swing.JButton approve;
     private javax.swing.JButton dashboard;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton delete;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton logout;
-    private javax.swing.JButton orders;
     private javax.swing.JButton products;
     private javax.swing.JButton reports;
+    private javax.swing.JButton search;
+    private javax.swing.JTextField searchuser;
+    private javax.swing.JButton update;
     private javax.swing.JButton user;
     private javax.swing.JTable usertable1;
     // End of variables declaration//GEN-END:variables

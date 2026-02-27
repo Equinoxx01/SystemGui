@@ -62,7 +62,7 @@ public class adminprofile extends javax.swing.JFrame {
         initComponents();
         setTitle("adminProfile");
         
-        JButton[] buttons = { dashboard, customer, products, orders, reports, user, logout };
+        JButton[] buttons = { dashboard, products, reports, user, logout };
 
         for (JButton btn : buttons) {
             btn.setOpaque(true);
@@ -74,9 +74,7 @@ public class adminprofile extends javax.swing.JFrame {
     private void resetMenuColors() {
     JButton[] buttons = {
         dashboard, // Dashboard
-        customer,
-        products, // Reports
-        orders,
+        products, // Reports       
         reports,
         user,
         logout// Settings
@@ -100,9 +98,7 @@ public class adminprofile extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         dashboard = new javax.swing.JButton();
-        customer = new javax.swing.JButton();
         products = new javax.swing.JButton();
-        orders = new javax.swing.JButton();
         reports = new javax.swing.JButton();
         user = new javax.swing.JButton();
         profile = new javax.swing.JButton();
@@ -135,7 +131,7 @@ public class adminprofile extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("ADMIN DASHBOARD");
+        jLabel1.setText("ADMIN PROFILE");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 250, 50));
 
         dashboard.setBackground(new java.awt.Color(255, 255, 255));
@@ -153,21 +149,6 @@ public class adminprofile extends javax.swing.JFrame {
         });
         jPanel2.add(dashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, 150, 30));
 
-        customer.setBackground(new java.awt.Color(255, 255, 255));
-        customer.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        customer.setText("Customer");
-        customer.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                customerMouseClicked(evt);
-            }
-        });
-        customer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                customerActionPerformed(evt);
-            }
-        });
-        jPanel2.add(customer, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 150, 30));
-
         products.setBackground(new java.awt.Color(255, 255, 255));
         products.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         products.setText("Products");
@@ -181,22 +162,7 @@ public class adminprofile extends javax.swing.JFrame {
                 productsActionPerformed(evt);
             }
         });
-        jPanel2.add(products, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 150, 30));
-
-        orders.setBackground(new java.awt.Color(255, 255, 255));
-        orders.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        orders.setText("Orders");
-        orders.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ordersMouseClicked(evt);
-            }
-        });
-        orders.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ordersActionPerformed(evt);
-            }
-        });
-        jPanel2.add(orders, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
+        jPanel2.add(products, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 150, 30));
 
         reports.setBackground(new java.awt.Color(255, 255, 255));
         reports.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -211,7 +177,7 @@ public class adminprofile extends javax.swing.JFrame {
                 reportsActionPerformed(evt);
             }
         });
-        jPanel2.add(reports, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 150, 30));
+        jPanel2.add(reports, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 150, 30));
 
         user.setBackground(new java.awt.Color(255, 255, 255));
         user.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -226,7 +192,7 @@ public class adminprofile extends javax.swing.JFrame {
                 userActionPerformed(evt);
             }
         });
-        jPanel2.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 320, 150, 30));
+        jPanel2.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
 
         profile.setBackground(new java.awt.Color(255, 255, 255));
         profile.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -241,7 +207,7 @@ public class adminprofile extends javax.swing.JFrame {
                 profileActionPerformed(evt);
             }
         });
-        jPanel2.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 370, 150, 30));
+        jPanel2.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 150, 30));
 
         logout.setBackground(new java.awt.Color(255, 51, 51));
         logout.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -330,15 +296,6 @@ public class adminprofile extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_dashboardActionPerformed
 
-    private void customerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerMouseClicked
-        resetMenuColors();
-        customer.setBackground(activeColor);
-    }//GEN-LAST:event_customerMouseClicked
-
-    private void customerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_customerActionPerformed
-
     private void productsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productsMouseClicked
         resetMenuColors();
         products.setBackground(activeColor);
@@ -347,15 +304,6 @@ public class adminprofile extends javax.swing.JFrame {
     private void productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_productsActionPerformed
-
-    private void ordersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ordersMouseClicked
-        resetMenuColors();
-        orders.setBackground(activeColor);
-    }//GEN-LAST:event_ordersMouseClicked
-
-    private void ordersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordersActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ordersActionPerformed
 
     private void reportsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportsMouseClicked
         resetMenuColors();
@@ -443,7 +391,6 @@ public class adminprofile extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton customer;
     private javax.swing.JButton dashboard;
     private javax.swing.JLabel email;
     private javax.swing.JLabel firstname;
@@ -464,7 +411,6 @@ public class adminprofile extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JLabel lastname;
     private javax.swing.JButton logout;
-    private javax.swing.JButton orders;
     private javax.swing.JButton products;
     private javax.swing.JButton profile;
     private javax.swing.JButton reports;

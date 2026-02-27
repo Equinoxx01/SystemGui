@@ -65,7 +65,7 @@ public class usersdashboard extends javax.swing.JFrame {
         orders = new javax.swing.JButton();
         profile = new javax.swing.JButton();
         logout = new javax.swing.JButton();
-        Transaction = new javax.swing.JButton();
+        cart = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -154,20 +154,20 @@ public class usersdashboard extends javax.swing.JFrame {
         });
         jPanel2.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 450, 150, 30));
 
-        Transaction.setBackground(new java.awt.Color(255, 255, 255));
-        Transaction.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        Transaction.setText("Transaction");
-        Transaction.addMouseListener(new java.awt.event.MouseAdapter() {
+        cart.setBackground(new java.awt.Color(255, 255, 255));
+        cart.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        cart.setText("Cart");
+        cart.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                TransactionMouseClicked(evt);
+                cartMouseClicked(evt);
             }
         });
-        Transaction.addActionListener(new java.awt.event.ActionListener() {
+        cart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TransactionActionPerformed(evt);
+                cartActionPerformed(evt);
             }
         });
-        jPanel2.add(Transaction, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
+        jPanel2.add(cart, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 380, 500));
 
@@ -183,6 +183,7 @@ public class usersdashboard extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void dashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardMouseClicked
@@ -195,8 +196,8 @@ public class usersdashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_dashboardActionPerformed
 
     private void productsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productsMouseClicked
-        resetMenuColors();
-        products.setBackground(activeColor);
+        new products(this.userId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_productsMouseClicked
 
     private void productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productsActionPerformed
@@ -209,7 +210,8 @@ public class usersdashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_ordersMouseClicked
 
     private void ordersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordersActionPerformed
-        // TODO add your handling code here:
+        resetMenuColors();
+        orders.setBackground(activeColor);
     }//GEN-LAST:event_ordersActionPerformed
 
     private void profileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileMouseClicked
@@ -239,13 +241,14 @@ public class usersdashboard extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_logoutActionPerformed
 
-    private void TransactionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TransactionMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TransactionMouseClicked
+    private void cartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cartMouseClicked
+        new transaction(this.userId).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_cartMouseClicked
 
-    private void TransactionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransactionActionPerformed
+    private void cartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_TransactionActionPerformed
+    }//GEN-LAST:event_cartActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -274,7 +277,7 @@ public class usersdashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Transaction;
+    private javax.swing.JButton cart;
     private javax.swing.JButton dashboard;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

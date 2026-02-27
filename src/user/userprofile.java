@@ -107,6 +107,7 @@ public class userprofile extends javax.swing.JFrame {
         orders = new javax.swing.JButton();
         profile = new javax.swing.JButton();
         logout = new javax.swing.JButton();
+        cart = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -135,7 +136,7 @@ public class userprofile extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("USER DASHBOARD");
+        jLabel1.setText("USER PROFILE");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 250, 50));
 
         dashboard.setBackground(new java.awt.Color(255, 255, 255));
@@ -196,7 +197,7 @@ public class userprofile extends javax.swing.JFrame {
                 profileActionPerformed(evt);
             }
         });
-        jPanel2.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
+        jPanel2.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 150, 30));
 
         logout.setBackground(new java.awt.Color(255, 51, 51));
         logout.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -208,6 +209,21 @@ public class userprofile extends javax.swing.JFrame {
             }
         });
         jPanel2.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 440, 150, 30));
+
+        cart.setBackground(new java.awt.Color(255, 255, 255));
+        cart.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        cart.setText("Cart");
+        cart.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cartMouseClicked(evt);
+            }
+        });
+        cart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cartActionPerformed(evt);
+            }
+        });
+        jPanel2.add(cart, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 380, 500));
 
@@ -272,11 +288,12 @@ public class userprofile extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void dashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardMouseClicked
-        resetMenuColors();
-        dashboard.setBackground(activeColor);
+        new usersdashboard(this.userId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_dashboardMouseClicked
 
     private void dashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dashboardActionPerformed
@@ -285,8 +302,8 @@ public class userprofile extends javax.swing.JFrame {
     }//GEN-LAST:event_dashboardActionPerformed
 
     private void productsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productsMouseClicked
-        resetMenuColors();
-        products.setBackground(activeColor);
+        new products(this.userId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_productsMouseClicked
 
     private void productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productsActionPerformed
@@ -328,6 +345,15 @@ public class userprofile extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_logoutActionPerformed
 
+    private void cartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cartMouseClicked
+        new transaction(this.userId).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_cartMouseClicked
+
+    private void cartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cartActionPerformed
+
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -353,6 +379,7 @@ public class userprofile extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cart;
     private javax.swing.JButton dashboard;
     private javax.swing.JLabel email;
     private javax.swing.JLabel firstname;

@@ -5,17 +5,67 @@
  */
 package user;
 
+import config.config;
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import system.Session;
+import system.adminprofile;
+import system.dashboard;
+import system.login;
+import user.userprofile;
 /**
  *
  * @author USER19
  */
 public class products extends javax.swing.JFrame {
 
+    public int adminId;
+    Color defaultColor = new Color(236, 240, 241);
+    Color activeColor = new Color(255, 204, 204);
+    private int userId;
+
     /**
      * Creates new form products
      */
     public products() {
+        this(0);
+    }
+
+    public products(int adminId) {
         initComponents();
+        this.adminId = adminId;
+        ensureProductsTable();
+        displayProducts();
+        JButton[] buttons = { dashboard, products, orders, cart, logout };
+        for (JButton btn : buttons) {
+            btn.setOpaque(true);
+            btn.setContentAreaFilled(true);
+            btn.setBorderPainted(false);
+            btn.setBackground(defaultColor);
+        }
+    }
+
+    private void resetMenuColors() {
+        JButton[] buttons = { dashboard, products, orders, cart, logout };
+        for (JButton btn : buttons) {
+            btn.setBackground(defaultColor);
+        }
+    }
+
+    private void ensureProductsTable() {
+        config.seedDefaultProducts();
+    }
+
+    private void displayProducts() {
+        String sql = "SELECT p_id AS 'ID', product_name AS 'Product Name', price AS 'Price', " +
+                "quantity AS 'Quantity', expiration_date AS 'Expiration', status AS 'Status' " +
+                "FROM tbl_products ORDER BY p_id DESC";
+        config con = new config();
+        con.displayData(sql, jTable1);
     }
 
     /**
@@ -33,11 +83,12 @@ public class products extends javax.swing.JFrame {
         dashboard = new javax.swing.JButton();
         products = new javax.swing.JButton();
         orders = new javax.swing.JButton();
-        profile = new javax.swing.JButton();
+        cart = new javax.swing.JButton();
         logout = new javax.swing.JButton();
-        Transaction = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
+        userprofile = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -49,7 +100,7 @@ public class products extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("USER DASHBOARD");
+        jLabel1.setText("PRODUCTS");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 250, 50));
 
         dashboard.setBackground(new java.awt.Color(255, 255, 255));
@@ -97,20 +148,23 @@ public class products extends javax.swing.JFrame {
         });
         jPanel2.add(orders, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 150, 30));
 
-        profile.setBackground(new java.awt.Color(255, 255, 255));
-        profile.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        profile.setText("Profile");
-        profile.addMouseListener(new java.awt.event.MouseAdapter() {
+        cart.setBackground(new java.awt.Color(255, 255, 255));
+        cart.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        cart.setText("Cart");
+        cart.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                profileMouseClicked(evt);
+                cartMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                cartMouseEntered(evt);
             }
         });
-        profile.addActionListener(new java.awt.event.ActionListener() {
+        cart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                profileActionPerformed(evt);
+                cartActionPerformed(evt);
             }
         });
-        jPanel2.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 150, 30));
+        jPanel2.add(cart, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
 
         logout.setBackground(new java.awt.Color(255, 51, 51));
         logout.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -121,31 +175,44 @@ public class products extends javax.swing.JFrame {
                 logoutActionPerformed(evt);
             }
         });
-        jPanel2.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 450, 150, 30));
+        jPanel2.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 440, 150, 30));
 
-        Transaction.setBackground(new java.awt.Color(255, 255, 255));
-        Transaction.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        Transaction.setText("Transaction");
-        Transaction.addMouseListener(new java.awt.event.MouseAdapter() {
+        userprofile.setBackground(new java.awt.Color(255, 255, 255));
+        userprofile.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        userprofile.setText("Profile");
+        userprofile.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                TransactionMouseClicked(evt);
+                userprofileMouseClicked(evt);
             }
         });
-        Transaction.addActionListener(new java.awt.event.ActionListener() {
+        userprofile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TransactionActionPerformed(evt);
+                userprofileActionPerformed(evt);
             }
         });
-        jPanel2.add(Transaction, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
+        jPanel2.add(userprofile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 150, 30));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 380, 500));
 
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 91, 630, 130));
+        jPanel3.setBackground(new java.awt.Color(255, 153, 153));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 0, 630, 500));
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 630, 90));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 0, 630, 500));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -159,15 +226,17 @@ public class products extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void dashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardMouseClicked
-        resetMenuColors();
-        dashboard.setBackground(activeColor);
+        new usersdashboard(this.userId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_dashboardMouseClicked
 
     private void dashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dashboardActionPerformed
-        // TODO add your handling code here:
+        new usersdashboard(this.userId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_dashboardActionPerformed
 
     private void productsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productsMouseClicked
@@ -185,18 +254,19 @@ public class products extends javax.swing.JFrame {
     }//GEN-LAST:event_ordersMouseClicked
 
     private void ordersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordersActionPerformed
-        // TODO add your handling code here:
+        resetMenuColors();
+        orders.setBackground(activeColor);
     }//GEN-LAST:event_ordersActionPerformed
 
-    private void profileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileMouseClicked
-        new userprofile(this.userId).setVisible(true);
+    private void cartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cartMouseClicked
+        new transaction(this.userId).setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_profileMouseClicked
+    }//GEN-LAST:event_cartMouseClicked
 
-    private void profileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileActionPerformed
-        new userprofile(this.userId).setVisible(true);
+    private void cartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartActionPerformed
+        new transaction(this.adminId).setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_profileActionPerformed
+    }//GEN-LAST:event_cartActionPerformed
 
     private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
         int choice = JOptionPane.showConfirmDialog(
@@ -208,20 +278,26 @@ public class products extends javax.swing.JFrame {
         );
 
         if (choice == JOptionPane.YES_OPTION) {
-            system.Session.clearSession();
+            Session.clearSession();
             login lg = new login();
             lg.setVisible(true);
             this.dispose();
         }
     }//GEN-LAST:event_logoutActionPerformed
 
-    private void TransactionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TransactionMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TransactionMouseClicked
+    private void userprofileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userprofileMouseClicked
+        new userprofile(this.userId).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_userprofileMouseClicked
 
-    private void TransactionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransactionActionPerformed
+    private void userprofileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userprofileActionPerformed
+        new system.adminprofile(this.adminId).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_userprofileActionPerformed
+
+    private void cartMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cartMouseEntered
         // TODO add your handling code here:
-    }//GEN-LAST:event_TransactionActionPerformed
+    }//GEN-LAST:event_cartMouseEntered
 
     /**
      * @param args the command line arguments
@@ -253,22 +329,28 @@ public class products extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new products().setVisible(true);
+                if (!Session.isLoggedIn() || !Session.isAdmin()) {
+                    JOptionPane.showMessageDialog(null, "You must log in first.", "Login Required", JOptionPane.WARNING_MESSAGE);
+                    new login().setVisible(true);
+                    return;
+                }
+                new products(Session.getUserId()).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Transaction;
+    private javax.swing.JButton cart;
     private javax.swing.JButton dashboard;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JButton logout;
     private javax.swing.JButton orders;
     private javax.swing.JButton products;
-    private javax.swing.JButton profile;
+    private javax.swing.JButton userprofile;
     // End of variables declaration//GEN-END:variables
 }
