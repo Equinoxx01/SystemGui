@@ -26,7 +26,7 @@ public class usersdashboard extends javax.swing.JFrame {
         initComponents();
         setTitle("User Dashboard");
         
-        JButton[] buttons = { dashboard, products, orders, profile, logout };
+        JButton[] buttons = { dashboard, products, profile, logout };
 
         for (JButton btn : buttons) {
             btn.setOpaque(true);
@@ -38,10 +38,8 @@ public class usersdashboard extends javax.swing.JFrame {
     }
     private void resetMenuColors() {
     JButton[] buttons = {
-        dashboard,
-        
-        products, 
-        orders,
+        dashboard,        
+        products,      
         profile,
         logout,
     };
@@ -62,7 +60,6 @@ public class usersdashboard extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         dashboard = new javax.swing.JButton();
         products = new javax.swing.JButton();
-        orders = new javax.swing.JButton();
         profile = new javax.swing.JButton();
         logout = new javax.swing.JButton();
         cart = new javax.swing.JButton();
@@ -113,21 +110,6 @@ public class usersdashboard extends javax.swing.JFrame {
         });
         jPanel2.add(products, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 150, 30));
 
-        orders.setBackground(new java.awt.Color(255, 255, 255));
-        orders.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        orders.setText("Orders");
-        orders.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ordersMouseClicked(evt);
-            }
-        });
-        orders.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ordersActionPerformed(evt);
-            }
-        });
-        jPanel2.add(orders, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 150, 30));
-
         profile.setBackground(new java.awt.Color(255, 255, 255));
         profile.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         profile.setText("Profile");
@@ -141,7 +123,7 @@ public class usersdashboard extends javax.swing.JFrame {
                 profileActionPerformed(evt);
             }
         });
-        jPanel2.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 150, 30));
+        jPanel2.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
 
         logout.setBackground(new java.awt.Color(255, 51, 51));
         logout.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -167,7 +149,7 @@ public class usersdashboard extends javax.swing.JFrame {
                 cartActionPerformed(evt);
             }
         });
-        jPanel2.add(cart, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
+        jPanel2.add(cart, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 150, 30));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 380, 500));
 
@@ -203,16 +185,6 @@ public class usersdashboard extends javax.swing.JFrame {
     private void productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_productsActionPerformed
-
-    private void ordersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ordersMouseClicked
-        resetMenuColors();
-        orders.setBackground(activeColor);
-    }//GEN-LAST:event_ordersMouseClicked
-
-    private void ordersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordersActionPerformed
-        resetMenuColors();
-        orders.setBackground(activeColor);
-    }//GEN-LAST:event_ordersActionPerformed
 
     private void profileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileMouseClicked
         new userprofile(this.userId).setVisible(true);
@@ -284,7 +256,6 @@ public class usersdashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton logout;
-    private javax.swing.JButton orders;
     private javax.swing.JButton products;
     private javax.swing.JButton profile;
     // End of variables declaration//GEN-END:variables

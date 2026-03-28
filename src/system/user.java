@@ -271,6 +271,11 @@ public class user extends javax.swing.JFrame {
 
         update.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         update.setText("UPDATE");
+        update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateActionPerformed(evt);
+            }
+        });
         jPanel1.add(update, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 100, 110, 33));
 
         searchuser.addActionListener(new java.awt.event.ActionListener() {
@@ -404,6 +409,10 @@ public class user extends javax.swing.JFrame {
         String like = "%" + keyword + "%";
         config con = new config();
         con.displayData(sql, usertable1, like, like, like, like);
+    }
+
+    private void searchuserActionPerformed(java.awt.event.ActionEvent evt) {
+        searchActionPerformed(evt);
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

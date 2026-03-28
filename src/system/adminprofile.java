@@ -209,7 +209,7 @@ public class adminprofile extends javax.swing.JFrame {
         });
         jPanel2.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 150, 30));
 
-        logout.setBackground(new java.awt.Color(255, 51, 51));
+        logout.setBackground(new java.awt.Color(255, 255, 255));
         logout.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         logout.setForeground(new java.awt.Color(255, 0, 0));
         logout.setText("LOG OUT");

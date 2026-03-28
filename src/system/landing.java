@@ -13,7 +13,7 @@ public class landing extends javax.swing.JFrame {
     public landing() {
          initComponents();
 
-    JButton[] buttons = { aboutus, fruits, contacts };
+    JButton[] buttons = { };
 
     for (JButton btn : buttons) {
         btn.setOpaque(true);
@@ -25,9 +25,7 @@ public class landing extends javax.swing.JFrame {
 
     private void resetMenuColors() {
     JButton[] buttons = {
-        aboutus, 
-        fruits,
-        contacts, 
+        
                   
        
     };
@@ -47,9 +45,6 @@ public class landing extends javax.swing.JFrame {
         white = new javax.swing.JLabel();
         basketwhite = new javax.swing.JLabel();
         basketorange = new javax.swing.JLabel();
-        aboutus = new javax.swing.JButton();
-        contacts = new javax.swing.JButton();
-        fruits = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -68,71 +63,26 @@ public class landing extends javax.swing.JFrame {
         orange.setForeground(new java.awt.Color(255, 153, 0));
         orange.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         orange.setText("FRUIT ");
-        jPanel2.add(orange, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 230, 70));
+        jPanel2.add(orange, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 0, 230, 70));
 
         white.setFont(new java.awt.Font("Segoe UI", 1, 70)); // NOI18N
         white.setForeground(new java.awt.Color(255, 255, 255));
         white.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         white.setText("FRUIT ");
-        jPanel2.add(white, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 230, 70));
+        jPanel2.add(white, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 0, 230, 70));
 
         basketwhite.setFont(new java.awt.Font("Segoe UI", 1, 70)); // NOI18N
         basketwhite.setForeground(new java.awt.Color(255, 255, 255));
         basketwhite.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         basketwhite.setText("BASKET");
-        jPanel2.add(basketwhite, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 0, 270, 70));
+        jPanel2.add(basketwhite, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 0, 270, 70));
 
         basketorange.setBackground(new java.awt.Color(255, 153, 0));
         basketorange.setFont(new java.awt.Font("Segoe UI", 1, 70)); // NOI18N
         basketorange.setForeground(new java.awt.Color(255, 153, 0));
         basketorange.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         basketorange.setText("BASKET");
-        jPanel2.add(basketorange, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, 270, 70));
-
-        aboutus.setBackground(new java.awt.Color(255, 255, 255));
-        aboutus.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        aboutus.setText("About us");
-        aboutus.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                aboutusMouseClicked(evt);
-            }
-        });
-        aboutus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aboutusActionPerformed(evt);
-            }
-        });
-        jPanel2.add(aboutus, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 30, 120, 30));
-
-        contacts.setBackground(new java.awt.Color(255, 255, 255));
-        contacts.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        contacts.setText("Contacts");
-        contacts.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                contactsMouseClicked(evt);
-            }
-        });
-        contacts.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                contactsActionPerformed(evt);
-            }
-        });
-        jPanel2.add(contacts, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 30, 120, 30));
-
-        fruits.setBackground(new java.awt.Color(255, 255, 255));
-        fruits.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        fruits.setText("Fruits");
-        fruits.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                fruitsMouseClicked(evt);
-            }
-        });
-        fruits.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fruitsActionPerformed(evt);
-            }
-        });
-        jPanel2.add(fruits, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 30, 120, 30));
+        jPanel2.add(basketorange, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 0, 270, 70));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 90));
 
@@ -197,33 +147,6 @@ public class landing extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void aboutusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aboutusMouseClicked
-        resetMenuColors();
-        aboutus.setBackground(activeColor);
-    }//GEN-LAST:event_aboutusMouseClicked
-
-    private void aboutusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutusActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_aboutusActionPerformed
-
-    private void fruitsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fruitsMouseClicked
-       resetMenuColors();
-       fruits.setBackground(activeColor);
-    }//GEN-LAST:event_fruitsMouseClicked
-
-    private void fruitsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fruitsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fruitsActionPerformed
-
-    private void contactsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contactsMouseClicked
-        resetMenuColors();
-        contacts.setBackground(activeColor);
-    }//GEN-LAST:event_contactsMouseClicked
-
-    private void contactsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_contactsActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -260,11 +183,8 @@ public class landing extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton aboutus;
     private javax.swing.JLabel basketorange;
     private javax.swing.JLabel basketwhite;
-    private javax.swing.JButton contacts;
-    private javax.swing.JButton fruits;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;

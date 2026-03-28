@@ -53,7 +53,7 @@ public class transaction extends javax.swing.JFrame {
         ensureTables();
         displayAvailableProducts();
         setupCheckoutFields();
-        JButton[] buttons = { dashboard, products, orders, cart, logout };
+        JButton[] buttons = { dashboard, products, cart, logout };
         for (JButton btn : buttons) {
             btn.setOpaque(true);
             btn.setContentAreaFilled(true);
@@ -63,7 +63,7 @@ public class transaction extends javax.swing.JFrame {
     }
 
     private void resetMenuColors() {
-        JButton[] buttons = { dashboard, products, orders, cart, logout };
+        JButton[] buttons = { dashboard, products, cart, logout };
         for (JButton btn : buttons) {
             btn.setBackground(defaultColor);
         }
@@ -107,6 +107,32 @@ public class transaction extends javax.swing.JFrame {
         String sql = "SELECT p_id AS 'ID', product_name AS 'Product', price AS 'Price', quantity AS 'Qty', status AS 'Status' FROM tbl_products WHERE (quantity IS NULL OR quantity > 0) ORDER BY p_id";
         config con = new config();
         con.displayData(sql, product);
+    }
+
+    private String lookupCustomerName() {
+        if (userId <= 0) {
+            return "Guest";
+        }
+        try (Connection conn = config.connectDB()) {
+            if (conn == null) {
+                return "Customer";
+            }
+            try (PreparedStatement ps = conn.prepareStatement("SELECT f_name, l_name FROM tbl_register WHERE r_id = ?")) {
+                ps.setInt(1, userId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        String f = rs.getString("f_name");
+                        String l = rs.getString("l_name");
+                        String fn = f == null ? "" : f.trim();
+                        String ln = l == null ? "" : l.trim();
+                        String full = (fn + " " + ln).trim();
+                        return full.isEmpty() ? "Customer" : full;
+                    }
+                }
+            }
+        } catch (SQLException ignored) {
+        }
+        return "Customer";
     }
 
     private double getCartTotal() {
@@ -155,7 +181,6 @@ public class transaction extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         dashboard = new javax.swing.JButton();
         products = new javax.swing.JButton();
-        orders = new javax.swing.JButton();
         cart = new javax.swing.JButton();
         logout = new javax.swing.JButton();
         userprofile = new javax.swing.JButton();
@@ -212,21 +237,6 @@ public class transaction extends javax.swing.JFrame {
         });
         jPanel2.add(products, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 150, 30));
 
-        orders.setBackground(new java.awt.Color(255, 255, 255));
-        orders.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        orders.setText("Orders");
-        orders.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ordersMouseClicked(evt);
-            }
-        });
-        orders.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ordersActionPerformed(evt);
-            }
-        });
-        jPanel2.add(orders, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 150, 30));
-
         cart.setBackground(new java.awt.Color(255, 255, 255));
         cart.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         cart.setText("Cart");
@@ -240,7 +250,7 @@ public class transaction extends javax.swing.JFrame {
                 cartActionPerformed(evt);
             }
         });
-        jPanel2.add(cart, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
+        jPanel2.add(cart, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 150, 30));
 
         logout.setBackground(new java.awt.Color(255, 51, 51));
         logout.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -266,7 +276,7 @@ public class transaction extends javax.swing.JFrame {
                 userprofileActionPerformed(evt);
             }
         });
-        jPanel2.add(userprofile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 150, 30));
+        jPanel2.add(userprofile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 380, 500));
 
@@ -368,15 +378,6 @@ public class transaction extends javax.swing.JFrame {
         new products(this.userId).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_productsActionPerformed
-
-    private void ordersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ordersMouseClicked
-        resetMenuColors();
-        orders.setBackground(activeColor);
-    }//GEN-LAST:event_ordersMouseClicked
-
-    private void ordersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordersActionPerformed
-        // Stay on transaction/orders screen
-    }//GEN-LAST:event_ordersActionPerformed
 
     private void cartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cartMouseClicked
         new transaction(this.userId).setVisible(true);
@@ -503,6 +504,8 @@ public class transaction extends javax.swing.JFrame {
         txtChange.setText(String.format("%.2f", change));
         int choice = JOptionPane.showConfirmDialog(this, "Total: " + String.format("%.2f", total) + "\nCash: " + String.format("%.2f", cash) + "\nChange: " + String.format("%.2f", change) + "\n\nConfirm and complete order?", "Confirm Checkout", JOptionPane.YES_NO_OPTION);
         if (choice != JOptionPane.YES_OPTION) return;
+        DefaultTableModel cartModel = (DefaultTableModel) carts.getModel();
+        int orderId = 0;
         try (Connection conn = config.connectDB()) {
             if (conn == null) {
                 JOptionPane.showMessageDialog(this, "Database connection failed.");
@@ -519,38 +522,44 @@ public class transaction extends javax.swing.JFrame {
             }
             try (PreparedStatement getOrderId = conn.prepareStatement("SELECT last_insert_rowid()");
                  ResultSet rs = getOrderId.executeQuery()) {
-                int orderId = rs.next() ? rs.getInt(1) : 0;
-                if (orderId > 0) {
-                    DefaultTableModel cartModel = (DefaultTableModel) carts.getModel();
-                    try (PreparedStatement psItem = conn.prepareStatement("INSERT INTO tbl_order_items (order_id, product_id, product_name, qty, price, subtotal) VALUES (?,?,?,?,?,?)")) {
-                        for (int i = 0; i < cartModel.getRowCount(); i++) {
-                            int pid = ((Number) cartModel.getValueAt(i, 0)).intValue();
-                            String pname = cartModel.getValueAt(i, 1).toString();
-                            int qty = ((Number) cartModel.getValueAt(i, 2)).intValue();
-                            double pr = ((Number) cartModel.getValueAt(i, 3)).doubleValue();
-                            double sub = ((Number) cartModel.getValueAt(i, 4)).doubleValue();
-                            psItem.setInt(1, orderId);
-                            psItem.setInt(2, pid);
-                            psItem.setString(3, pname);
-                            psItem.setInt(4, qty);
-                            psItem.setDouble(5, pr);
-                            psItem.setDouble(6, sub);
-                            psItem.executeUpdate();
-                            try (PreparedStatement upd = conn.prepareStatement("UPDATE tbl_products SET quantity = COALESCE(quantity,0) - ? WHERE p_id = ?")) {
-                                upd.setInt(1, qty);
-                                upd.setInt(2, pid);
-                                upd.executeUpdate();
-                            }
-                        }
+                if (rs.next()) {
+                    orderId = rs.getInt(1);
+                }
+            }
+            if (orderId <= 0) {
+                JOptionPane.showMessageDialog(this, "Could not create order. Your cart was not cleared—please try again.");
+                return;
+            }
+            try (PreparedStatement psItem = conn.prepareStatement("INSERT INTO tbl_order_items (order_id, product_id, product_name, qty, price, subtotal) VALUES (?,?,?,?,?,?)")) {
+                for (int i = 0; i < cartModel.getRowCount(); i++) {
+                    int pid = ((Number) cartModel.getValueAt(i, 0)).intValue();
+                    String pname = cartModel.getValueAt(i, 1).toString();
+                    int qty = ((Number) cartModel.getValueAt(i, 2)).intValue();
+                    double pr = ((Number) cartModel.getValueAt(i, 3)).doubleValue();
+                    double sub = ((Number) cartModel.getValueAt(i, 4)).doubleValue();
+                    psItem.setInt(1, orderId);
+                    psItem.setInt(2, pid);
+                    psItem.setString(3, pname);
+                    psItem.setInt(4, qty);
+                    psItem.setDouble(5, pr);
+                    psItem.setDouble(6, sub);
+                    psItem.executeUpdate();
+                    try (PreparedStatement upd = conn.prepareStatement("UPDATE tbl_products SET quantity = COALESCE(quantity,0) - ? WHERE p_id = ?")) {
+                        upd.setInt(1, qty);
+                        upd.setInt(2, pid);
+                        upd.executeUpdate();
                     }
                 }
             }
-            JOptionPane.showMessageDialog(this, "Order completed. Change: " + String.format("%.2f", change));
+            JOptionPane.showMessageDialog(this, "Order complete! Thank you.");
+            receipt rec = new receipt(this, this.userId, orderId, lookupCustomerName(), cartModel, total, cash, change);
             setupCartModel();
             updateTotalDisplay();
             txtCash.setText("");
             txtChange.setText("");
             displayAvailableProducts();
+            rec.setVisible(true);
+            dispose();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Error saving order: " + e.getMessage());
         }
@@ -610,7 +619,6 @@ public class transaction extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton logout;
-    private javax.swing.JButton orders;
     private javax.swing.JTable product;
     private javax.swing.JButton products;
     private javax.swing.JTextField txtquantity;
