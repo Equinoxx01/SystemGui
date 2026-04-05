@@ -210,8 +210,8 @@ public class dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_productsActionPerformed
 
     private void reportsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportsMouseClicked
-        resetMenuColors();
-        reports.setBackground(activeColor);
+        new Reports(this.adminId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_reportsMouseClicked
 
     private void reportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportsActionPerformed

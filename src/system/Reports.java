@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import user.receipt;
 
 /**
  *
@@ -55,6 +56,7 @@ public class Reports extends javax.swing.JFrame {
         try (Connection conn = config.connectDB(); Statement st = conn != null ? conn.createStatement() : null) {
             if (st != null) {
                 st.executeUpdate("CREATE TABLE IF NOT EXISTS tbl_orders (order_id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, total REAL, cash REAL, change_amt REAL, order_date TEXT)");
+                st.executeUpdate("CREATE TABLE IF NOT EXISTS tbl_order_items (id INTEGER PRIMARY KEY AUTOINCREMENT, order_id INTEGER, product_id INTEGER, product_name TEXT, qty INTEGER, price REAL, subtotal REAL)");
             }
         } catch (SQLException e) {
             // ignore
@@ -92,6 +94,7 @@ public class Reports extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        print = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -212,6 +215,15 @@ public class Reports extends javax.swing.JFrame {
 
         jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 630, 91));
 
+        print.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        print.setText("PRINT");
+        print.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printActionPerformed(evt);
+            }
+        });
+        jPanel3.add(print, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 180, 110, 33));
+
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 0, 630, 500));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -295,6 +307,32 @@ public class Reports extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_adminprofileActionPerformed
 
+    private void printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printActionPerformed
+        int row = jTable1.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "Select an order in the table first.", "Print receipt",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        Object idObj = jTable1.getValueAt(row, 0);
+        int orderId = 0;
+        if (idObj instanceof Number) {
+            orderId = ((Number) idObj).intValue();
+        } else {
+            try {
+                orderId = Integer.parseInt(String.valueOf(idObj).trim());
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Could not read the order ID for this row.");
+                return;
+            }
+        }
+        if (orderId <= 0) {
+            JOptionPane.showMessageDialog(this, "Invalid order.");
+            return;
+        }
+        new receipt(this, orderId, true).setVisible(true);
+    }//GEN-LAST:event_printActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -345,6 +383,7 @@ public class Reports extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JButton logout;
+    private javax.swing.JButton print;
     private javax.swing.JButton products;
     private javax.swing.JButton reports;
     private javax.swing.JButton user;

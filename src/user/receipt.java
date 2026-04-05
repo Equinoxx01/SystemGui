@@ -11,6 +11,10 @@ import java.awt.image.BufferedImage;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.print.PrinterException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -19,6 +23,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
+import config.config;
 import system.Session;
 import system.login;
 
@@ -56,6 +61,8 @@ public class receipt extends javax.swing.JFrame {
 
     public int userId;
     private String plainReceiptForPrint = "";
+    /** When true, BACK closes only this window (opened from admin Reports). */
+    private boolean backToReports;
 
     /**
      * Creates new form receipt (designer / preview only).
@@ -97,6 +104,119 @@ public class receipt extends javax.swing.JFrame {
             setSize(owner.getSize());
             setLocation(owner.getLocation());
         }
+    }
+
+    /**
+     * Opens the same receipt UI for an existing order (e.g. admin Reports). BACK returns to Reports.
+     */
+    public receipt(java.awt.Window owner, int orderId, boolean fromAdminReports) {
+        initComponents();
+        this.backToReports = fromAdminReports;
+        if (!Session.isLoggedIn()) {
+            JOptionPane.showMessageDialog(owner, "Your session has expired. Please log in again.",
+                    "Login Required", JOptionPane.WARNING_MESSAGE);
+            dispose();
+            new login().setVisible(true);
+            return;
+        }
+        this.userId = Session.getUserId();
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                goBackToDashboard();
+            }
+        });
+
+        double orderTotal = 0;
+        double cashPaid = 0;
+        double changeAmt = 0;
+        int buyerUserId = 0;
+        DefaultTableModel cartModel = new DefaultTableModel(
+                new String[] { "Product ID", "Product Name", "Quantity", "Price", "Subtotal" }, 0);
+
+        try (Connection conn = config.connectDB()) {
+            if (conn == null) {
+                JOptionPane.showMessageDialog(owner, "Database connection failed.");
+                dispose();
+                return;
+            }
+            try (PreparedStatement ps = conn.prepareStatement(
+                    "SELECT user_id, total, cash, change_amt FROM tbl_orders WHERE order_id = ?")) {
+                ps.setInt(1, orderId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (!rs.next()) {
+                        JOptionPane.showMessageDialog(owner, "Order not found.");
+                        dispose();
+                        return;
+                    }
+                    buyerUserId = rs.getInt("user_id");
+                    orderTotal = rs.getDouble("total");
+                    cashPaid = rs.getDouble("cash");
+                    changeAmt = rs.getDouble("change_amt");
+                }
+            }
+            if (!Session.isAdmin() && buyerUserId != Session.getUserId()) {
+                JOptionPane.showMessageDialog(owner, "You can only view your own orders.");
+                dispose();
+                return;
+            }
+            try (PreparedStatement ps = conn.prepareStatement(
+                    "SELECT product_id, product_name, qty, price, subtotal FROM tbl_order_items WHERE order_id = ? ORDER BY id")) {
+                ps.setInt(1, orderId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        cartModel.addRow(new Object[] {
+                                rs.getInt("product_id"),
+                                rs.getString("product_name"),
+                                rs.getInt("qty"),
+                                rs.getDouble("price"),
+                                rs.getDouble("subtotal")
+                        });
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(owner, "Could not load order: " + e.getMessage());
+            dispose();
+            return;
+        }
+
+        String customerName = lookupCustomerNameByUserId(buyerUserId);
+        plainReceiptForPrint = buildPlainReceipt(orderId, customerName, cartModel, orderTotal, cashPaid, changeAmt);
+        applyOrderDataToForm(orderId, customerName, cartModel, orderTotal, cashPaid, changeAmt);
+        pack();
+        if (owner != null) {
+            setSize(owner.getSize());
+            setLocation(owner.getLocation());
+        }
+    }
+
+    private static String lookupCustomerNameByUserId(int rId) {
+        if (rId <= 0) {
+            return "Guest";
+        }
+        try (Connection conn = config.connectDB()) {
+            if (conn == null) {
+                return "Customer";
+            }
+            try (PreparedStatement ps = conn.prepareStatement(
+                    "SELECT f_name, l_name FROM tbl_register WHERE r_id = ?")) {
+                ps.setInt(1, rId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        String f = rs.getString("f_name");
+                        String l = rs.getString("l_name");
+                        String fn = f == null ? "" : f.trim();
+                        String ln = l == null ? "" : l.trim();
+                        String full = (fn + " " + ln).trim();
+                        return full.isEmpty() ? "Customer" : full;
+                    }
+                }
+            }
+        } catch (SQLException ignored) {
+        }
+        return "Customer";
     }
 
     /**
@@ -344,6 +464,10 @@ public class receipt extends javax.swing.JFrame {
     }
 
     private void goBackToDashboard() {
+        if (backToReports) {
+            dispose();
+            return;
+        }
         int id = Session.isLoggedIn() ? Session.getUserId() : userId;
         new usersdashboard(id).setVisible(true);
         dispose();

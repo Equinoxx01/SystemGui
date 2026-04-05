@@ -7,8 +7,6 @@ package user;
     import javax.swing.JOptionPane;
     import system.dashboard;
     import system.login;
-  
-
 
 public class usersdashboard extends javax.swing.JFrame {
     
@@ -26,20 +24,22 @@ public class usersdashboard extends javax.swing.JFrame {
         initComponents();
         setTitle("User Dashboard");
         
-        JButton[] buttons = { dashboard, products, profile, logout };
+        JButton[] buttons = { dashboard, products, cart, orders, profile, logout };
 
         for (JButton btn : buttons) {
             btn.setOpaque(true);
             btn.setContentAreaFilled(true);
             btn.setBorderPainted(false);
             btn.setBackground(defaultColor);
-    }
+        }
 
     }
     private void resetMenuColors() {
     JButton[] buttons = {
-        dashboard,        
-        products,      
+        dashboard,
+        products,
+        cart,
+        orders,
         profile,
         logout,
     };
@@ -63,6 +63,7 @@ public class usersdashboard extends javax.swing.JFrame {
         profile = new javax.swing.JButton();
         logout = new javax.swing.JButton();
         cart = new javax.swing.JButton();
+        orders = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -123,7 +124,7 @@ public class usersdashboard extends javax.swing.JFrame {
                 profileActionPerformed(evt);
             }
         });
-        jPanel2.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
+        jPanel2.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 150, 30));
 
         logout.setBackground(new java.awt.Color(255, 51, 51));
         logout.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -150,6 +151,21 @@ public class usersdashboard extends javax.swing.JFrame {
             }
         });
         jPanel2.add(cart, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 150, 30));
+
+        orders.setBackground(new java.awt.Color(255, 255, 255));
+        orders.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        orders.setText("Orders");
+        orders.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ordersMouseClicked(evt);
+            }
+        });
+        orders.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ordersActionPerformed(evt);
+            }
+        });
+        jPanel2.add(orders, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 380, 500));
 
@@ -222,6 +238,16 @@ public class usersdashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cartActionPerformed
 
+    private void ordersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ordersMouseClicked
+        new orders(this.userId).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_ordersMouseClicked
+
+    private void ordersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordersActionPerformed
+        new orders(this.userId).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_ordersActionPerformed
+
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -256,6 +282,7 @@ public class usersdashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton logout;
+    private javax.swing.JButton orders;
     private javax.swing.JButton products;
     private javax.swing.JButton profile;
     // End of variables declaration//GEN-END:variables

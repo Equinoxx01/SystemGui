@@ -184,6 +184,7 @@ public class transaction extends javax.swing.JFrame {
         cart = new javax.swing.JButton();
         logout = new javax.swing.JButton();
         userprofile = new javax.swing.JButton();
+        orders1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         Quantity = new javax.swing.JLabel();
         txtquantity = new javax.swing.JTextField();
@@ -276,7 +277,22 @@ public class transaction extends javax.swing.JFrame {
                 userprofileActionPerformed(evt);
             }
         });
-        jPanel2.add(userprofile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
+        jPanel2.add(userprofile, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 150, 30));
+
+        orders1.setBackground(new java.awt.Color(255, 255, 255));
+        orders1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        orders1.setText("Orders");
+        orders1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                orders1MouseClicked(evt);
+            }
+        });
+        orders1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                orders1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(orders1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 150, 30));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 380, 500));
 
@@ -551,19 +567,28 @@ public class transaction extends javax.swing.JFrame {
                     }
                 }
             }
-            JOptionPane.showMessageDialog(this, "Order complete! Thank you.");
-            receipt rec = new receipt(this, this.userId, orderId, lookupCustomerName(), cartModel, total, cash, change);
+            JOptionPane.showMessageDialog(this,
+                    "Order complete! Open My Orders to view your fruits and print the receipt.");
             setupCartModel();
             updateTotalDisplay();
             txtCash.setText("");
             txtChange.setText("");
             displayAvailableProducts();
-            rec.setVisible(true);
             dispose();
+            new usersdashboard(this.userId).setVisible(true);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Error saving order: " + e.getMessage());
         }
     }//GEN-LAST:event_checkoutActionPerformed
+
+    private void orders1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_orders1MouseClicked
+        new orders(this.userId).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_orders1MouseClicked
+
+    private void orders1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orders1ActionPerformed
+        // already on orders
+    }//GEN-LAST:event_orders1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -619,6 +644,7 @@ public class transaction extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton logout;
+    private javax.swing.JButton orders1;
     private javax.swing.JTable product;
     private javax.swing.JButton products;
     private javax.swing.JTextField txtquantity;
