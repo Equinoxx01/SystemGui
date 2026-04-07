@@ -21,7 +21,7 @@ import javax.swing.event.ListSelectionListener;
  *
  * @author PC1
  */
-public class prodcutsadmin extends javax.swing.JFrame {
+public class productsadmin extends javax.swing.JFrame {
 
     public int adminId;
     Color defaultColor = new Color(236, 240, 241);
@@ -30,11 +30,11 @@ public class prodcutsadmin extends javax.swing.JFrame {
     /**
      * Creates new form prodcutsadmin
      */
-    public prodcutsadmin() {
+    public productsadmin() {
         this(0);
     }
 
-    public prodcutsadmin(int adminId) {
+    public productsadmin(int adminId) {
         initComponents();
         this.adminId = adminId;
         ensureProductsTable();
@@ -328,6 +328,11 @@ public class prodcutsadmin extends javax.swing.JFrame {
 
         update.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         update.setText("UPDATE");
+        update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateActionPerformed(evt);
+            }
+        });
         jPanel3.add(update, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, 110, 33));
 
         delete.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -602,14 +607,15 @@ public class prodcutsadmin extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(prodcutsadmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(productsadmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(prodcutsadmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(productsadmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(prodcutsadmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(productsadmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(prodcutsadmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(productsadmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
@@ -620,7 +626,7 @@ public class prodcutsadmin extends javax.swing.JFrame {
                     new login().setVisible(true);
                     return;
                 }
-                new prodcutsadmin(Session.getUserId()).setVisible(true);
+                new productsadmin(Session.getUserId()).setVisible(true);
             }
         });
     }

@@ -297,8 +297,8 @@ public class adminprofile extends javax.swing.JFrame {
     }//GEN-LAST:event_dashboardActionPerformed
 
     private void productsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productsMouseClicked
-        resetMenuColors();
-        products.setBackground(activeColor);
+        new productsadmin(this.adminId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_productsMouseClicked
 
     private void productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productsActionPerformed
@@ -306,8 +306,8 @@ public class adminprofile extends javax.swing.JFrame {
     }//GEN-LAST:event_productsActionPerformed
 
     private void reportsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportsMouseClicked
-        resetMenuColors();
-        reports.setBackground(activeColor);
+        new Reports(this.adminId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_reportsMouseClicked
 
     private void reportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportsActionPerformed

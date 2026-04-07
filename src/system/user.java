@@ -330,7 +330,7 @@ public class user extends javax.swing.JFrame {
     }//GEN-LAST:event_productsMouseClicked
 
     private void productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productsActionPerformed
-        new prodcutsadmin(this.adminId).setVisible(true);
+        new productsadmin(this.adminId).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_productsActionPerformed
 
